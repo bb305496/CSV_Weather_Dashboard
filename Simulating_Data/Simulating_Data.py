@@ -19,7 +19,7 @@ wind = random.uniform(0, 15, n).round(decimals=1)
 # Creating data frame for pandas
 data = {
     "Day" : day,
-    "Temperature": temperature,
+    "Temperature[C]": temperature,
     "Precipitation" : precipitation,
     "Wind" : wind
 }
