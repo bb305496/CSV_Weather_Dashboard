@@ -19,9 +19,6 @@ class MainWindow:
         self.filter_button = self.window.findChild(QPushButton, "filterButton")
         self.combo_box = self.window.findChild(QComboBox, "comboBox")
         self.combo_box.addItem("All")
-        self.combo_box.addItem("Temperature")
-        self.combo_box.addItem("Precipitation")
-        self.combo_box.addItem("Wind")
 
         # Binding methods to buttons
         if self.load_csv_button:
@@ -45,14 +42,27 @@ class MainWindow:
             if len(self.data_path) != 0:
                 self.df = pd.read_csv(self.data_path, sep=";")
                 self.display_data(self.df)
+                self.add_items_to_combobox(self.df)
             else:
                 print("Operation canceled")
 
+    # Dynamic adding items to combo box by loading csv file headers
+    def add_items_to_combobox(self, df: pd.DataFrame):
+        columns = df.columns
+        for column in columns:
+            self.combo_box.addItem(column)
+
     # Checking current comboBox index
-    def check_index(self):
+    def check_index(self) -> int:
         cindex = self.combo_box.currentIndex()
         print(f"currentIndex {cindex}")
         return cindex
+
+    # Checking current comboBox text
+    def check_text(self) -> str:
+        ctext = self.combo_box.currentText()
+        print(f"currentText {ctext}")
+        return ctext
 
     # Filtering data by column
     def filter_data(self):
