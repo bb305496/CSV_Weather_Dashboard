@@ -1,5 +1,5 @@
 import pandas as pd
-from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox
+from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel
 from PySide6.QtUiTools import QUiLoader
 from TableModel import TableModel
 
@@ -20,6 +20,13 @@ class MainWindow:
         self.filter_button = self.window.findChild(QPushButton, "filterButton")
         self.combo_box = self.window.findChild(QComboBox, "comboBox")
         self.combo_box.addItem("All")
+        self.avg_check_box = self.window.findChild(QCheckBox, "AVGCheckBox")
+        self.max_check_box = self.window.findChild(QCheckBox, "MAXCheckBox")
+        self.min_check_box = self.window.findChild(QCheckBox, "MINCheckBox")
+        self.label = self.window.findChild(QLabel, "label")
+        self.label_2 = self.window.findChild(QLabel, "label_2")
+        self.label_3 = self.window.findChild(QLabel, "label_3")
+        self.calc_button = self.window.findChild(QPushButton, "calcButton")
 
         # Binding methods to buttons
         if self.load_csv_button:
@@ -28,8 +35,76 @@ class MainWindow:
         if self.filter_button:
             self.filter_button.clicked.connect(self.filter_data)
 
+        if self.calc_button:
+            self.calc_button.clicked.connect(self.calc_avg)
+            self.calc_button.clicked.connect(self.calc_max)
+            self.calc_button.clicked.connect(self.calc_min)
+
         # Binding methods to comboBox
-        self.combo_box.activated.connect(self.check_index)
+        if self.combo_box:
+            self.combo_box.activated.connect(self.check_index)
+
+        # Binding methods to checksBox
+        if self.avg_check_box:
+            self.avg_check_box.stateChanged.connect(self.is_avg_selected)
+
+        if self.max_check_box:
+            self.max_check_box.stateChanged.connect(self.is_max_selected)
+
+        if self.min_check_box:
+            self.min_check_box.stateChanged.connect(self.is_min_selected)
+
+    def is_avg_selected(self) -> bool:
+        print(self.avg_check_box.isChecked())
+        return self.avg_check_box.isChecked()
+
+    def is_max_selected(self) -> bool:
+        print(self.max_check_box.isChecked())
+        return self.max_check_box.isChecked()
+
+    def is_min_selected(self) -> bool:
+        print(self.min_check_box.isChecked())
+        return self.min_check_box.isChecked()
+
+    def calc_avg(self):
+        if not self.df.empty:
+            if self.avg_check_box.isChecked():
+                if self.check_index() == 0:
+                    self.label.setText(self.df.mean().to_string())
+                else:
+                    column = self.check_text()
+                    df_mean = self.df[[column]].mean()
+                    self.label.setText(df_mean.to_string())
+        else:
+            #TODO DIALOGUE
+            print("Empty dataframe")
+
+    def calc_max(self):
+        if not self.df.empty:
+            if self.max_check_box.isChecked():
+                if self.check_index() == 0:
+                    self.label_2.setText(self.df.max().to_string())
+                else:
+                    column = self.check_text()
+                    df_mean = self.df[[column]].max()
+                    self.label_2.setText(df_mean.to_string())
+        else:
+            #TODO DIALOGUE
+            print("Empty dataframe")
+
+    def calc_min(self):
+        if not self.df.empty:
+            if self.min_check_box.isChecked():
+                if self.check_index() == 0:
+                    self.label_3.setText(self.df.min().to_string())
+                else:
+                    column = self.check_text()
+                    df_mean = self.df[[column]].min()
+                    self.label_3.setText(df_mean.to_string())
+        else:
+            #TODO DIALOGUE
+            print("Empty dataframe")
+
 
     # Loading data from csv file
     def load_data(self):
@@ -79,9 +154,9 @@ class MainWindow:
         else:
             if self.check_index() == 0:
                 self.display_data(self.df)
-            for column in self.columns:
-                if column == self.check_text():
-                    self.display_data(self.df[[column]])
+            else:
+                column = self.check_text()
+                self.display_data(self.df[[column]])
 
 
     # Showing data on tabel

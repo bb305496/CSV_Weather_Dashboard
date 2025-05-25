@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d489afc-102e-4fbc-9183-288d06bb94db" name="Changes" comment="Dynamic adding items to combo box">
+    <list default="true" id="8d489afc-102e-4fbc-9183-288d06bb94db" name="Changes" comment="Dynamic data filtering by column">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt_Designer/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt_Designer/mainwindow.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Weather_Dashboard/Weather_Dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/Weather_Dashboard/Weather_Dashboard.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -216,12 +217,21 @@
       <option name="project" value="LOCAL" />
       <updated>1748159516621</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Dynamic data filtering by column">
+      <option name="closed" value="true" />
+      <created>1748163559057</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1748163559057</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Generating data and saving it to csv" />
     <MESSAGE value="Dynamic adding items to combo box" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dynamic adding items to combo box" />
+    <MESSAGE value="Dynamic data filtering by column" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dynamic data filtering by column" />
   </component>
 </project>
