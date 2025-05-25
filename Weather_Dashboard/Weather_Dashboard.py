@@ -1,5 +1,5 @@
 import pandas as pd
-from PySide6.QtWidgets import QApplication, QMainWindow, QTableView, QPushButton, QLabel, QFileDialog, QComboBox
+from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox
 from PySide6.QtUiTools import QUiLoader
 from TableModel import TableModel
 
@@ -12,6 +12,7 @@ class MainWindow:
         self.data_path = None
         self.df = pd.DataFrame()
         self.model = None
+        self.columns = None
 
         # GUI Initialization
         self.load_csv_button = self.window.findChild(QPushButton, "loadCSVButton")
@@ -48,9 +49,16 @@ class MainWindow:
 
     # Dynamic adding items to combo box by loading csv file headers
     def add_items_to_combobox(self, df: pd.DataFrame):
-        columns = df.columns
-        for column in columns:
+        self.columns = df.columns
+        self.clear_combobox(self.combo_box)
+        for column in self.columns:
             self.combo_box.addItem(column)
+
+
+    # Clearing comboBox
+    def clear_combobox(self, combobox: QComboBox):
+        combobox.clear()
+        combobox.addItem("All")
 
     # Checking current comboBox index
     def check_index(self) -> int:
@@ -71,12 +79,9 @@ class MainWindow:
         else:
             if self.check_index() == 0:
                 self.display_data(self.df)
-            elif self.check_index() == 1:
-                self.display_data(self.df[["Temperature[C]"]])
-            elif self.check_index() == 2:
-                self.display_data(self.df[["Precipitation"]])
-            elif self.check_index() == 3:
-                self.display_data(self.df[["Wind"]])
+            for column in self.columns:
+                if column == self.check_text():
+                    self.display_data(self.df[[column]])
 
 
     # Showing data on tabel
