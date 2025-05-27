@@ -1,8 +1,9 @@
 import pandas as pd
-from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel
+from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog
 from PySide6.QtUiTools import QUiLoader
 from TableModel import TableModel
-from GenerateChartDialog import ChartDialogue
+from GeneratePlotChartDialog import PlotChartDialog
+import matplotlib.pyplot as plt
 
 # MainWindow
 class MainWindow:
@@ -18,44 +19,18 @@ class MainWindow:
         self.available_charts = ["Plot chart", "Scatter chart"]
 
         self.init_ui()
+        self.bind_methods()
 
-        # Binding methods to buttons
-        if self.load_csv_button:
-            self.load_csv_button.clicked.connect(self.load_data)
-
-        if self.filter_button:
-            self.filter_button.clicked.connect(self.filter_data)
-
-        if self.calc_button:
-            self.calc_button.clicked.connect(self.calc_avg)
-            self.calc_button.clicked.connect(self.calc_max)
-            self.calc_button.clicked.connect(self.calc_min)
-
-        if self.generate_button:
-            self.generate_button.clicked.connect(self.open_chart_dialog)
-
-
-        # Binding methods to comboBox
-        if self.combo_box:
-            self.combo_box.activated.connect(self.check_index)
-
-        # Binding methods to checksBox
-        if self.avg_check_box:
-            self.avg_check_box.stateChanged.connect(self.is_avg_selected)
-
-        if self.max_check_box:
-            self.max_check_box.stateChanged.connect(self.is_max_selected)
-
-        if self.min_check_box:
-            self.min_check_box.stateChanged.connect(self.is_min_selected)
-
+    # Opening chart dialog
     def open_chart_dialog(self):
-        dialog = ChartDialogue()
+        dialog = PlotChartDialog(self.df.columns)
         result = dialog.show_dialog()
 
-        if result == dialog.dlg.accepted:
+        if result == QDialog.Accepted:
             print("Accept")
-        else:
+            #plt.plot([1,2,3], [3,4,5])
+            #plt.show()
+        elif result == QDialog.Rejected:
             print("Cancel")
 
 
@@ -186,6 +161,38 @@ class MainWindow:
         self.label_2 = self.window.findChild(QLabel, "label_2")
         self.label_3 = self.window.findChild(QLabel, "label_3")
         self.calc_button = self.window.findChild(QPushButton, "calcButton")
+
+    # Binding methods to UI widgets
+    def bind_methods(self):
+        # Binding methods to buttons
+        if self.load_csv_button:
+            self.load_csv_button.clicked.connect(self.load_data)
+
+        if self.filter_button:
+            self.filter_button.clicked.connect(self.filter_data)
+
+        if self.calc_button:
+            self.calc_button.clicked.connect(self.calc_avg)
+            self.calc_button.clicked.connect(self.calc_max)
+            self.calc_button.clicked.connect(self.calc_min)
+
+        if self.generate_button:
+            self.generate_button.clicked.connect(self.open_chart_dialog)
+
+
+        # Binding methods to comboBox
+        if self.combo_box:
+            self.combo_box.activated.connect(self.check_index)
+
+        # Binding methods to checksBox
+        if self.avg_check_box:
+            self.avg_check_box.stateChanged.connect(self.is_avg_selected)
+
+        if self.max_check_box:
+            self.max_check_box.stateChanged.connect(self.is_max_selected)
+
+        if self.min_check_box:
+            self.min_check_box.stateChanged.connect(self.is_min_selected)
 
     # Showing data on tabel
     def display_data(self, df):
