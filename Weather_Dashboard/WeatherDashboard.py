@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog
 from PySide6.QtUiTools import QUiLoader
 from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
+from EmptyDatadrameDialog import EmptyDataFrameDialog
 import matplotlib.pyplot as plt
 
 # MainWindow
@@ -21,17 +22,56 @@ class MainWindow:
         self.init_ui()
         self.bind_methods()
 
+
+    # Binding methods to UI widgets
+    def bind_methods(self):
+        # Binding methods to buttons
+        if self.load_csv_button:
+            self.load_csv_button.clicked.connect(self.load_data)
+
+        if self.filter_button:
+            self.filter_button.clicked.connect(self.filter_data)
+
+        if self.calc_button:
+            self.calc_button.clicked.connect(self.what_calc_selected)
+            #self.calc_button.clicked.connect(self.calc_max)
+            #self.calc_button.clicked.connect(self.calc_min)
+
+        if self.generate_button:
+            self.generate_button.clicked.connect(self.open_chart_dialog)
+
+
+        # Binding methods to comboBox
+        if self.combo_box:
+            self.combo_box.activated.connect(self.check_index)
+
+        # Binding methods to checksBox
+        if self.avg_check_box:
+            self.avg_check_box.stateChanged.connect(self.is_avg_selected)
+
+        if self.max_check_box:
+            self.max_check_box.stateChanged.connect(self.is_max_selected)
+
+        if self.min_check_box:
+            self.min_check_box.stateChanged.connect(self.is_min_selected)
+
     # Opening chart dialog
     def open_chart_dialog(self):
-        dialog = PlotChartDialog(self.df.columns)
-        result = dialog.show_dialog()
+        if self.df.empty:
+            self.show_warning_no_csv_dialogue()
+        elif self.combo_box2.currentText() == self.available_charts[0]:
+            dialog = PlotChartDialog(self.df.columns)
+            result = dialog.show_dialog()
 
-        if result == QDialog.Accepted:
-            print("Accept")
-            #plt.plot([1,2,3], [3,4,5])
-            #plt.show()
-        elif result == QDialog.Rejected:
-            print("Cancel")
+            if result == QDialog.Accepted:
+                print("Accept")
+                #plt.plot([1,2,3], [3,4,5])
+                #plt.show()
+            elif result == QDialog.Rejected:
+                print("Cancel")
+        else:
+            #TODO Scatter plot
+            print("Wrong Combobox")
 
 
     def is_avg_selected(self) -> bool:
@@ -46,6 +86,26 @@ class MainWindow:
         print(self.min_check_box.isChecked())
         return self.min_check_box.isChecked()
 
+    def show_warning_no_csv_dialogue(self):
+        dialog = EmptyDataFrameDialog()
+        result = dialog.show_dialog()
+
+        if result == QDialog.Accepted:
+            print("OK pressed")
+
+    def what_calc_selected(self):
+        if self.is_avg_selected():
+            self.calc_avg()
+        if self.is_max_selected():
+            self.calc_max()
+        if self.is_min_selected():
+            self.calc_min()
+        if self.df.empty:
+            self.show_warning_no_csv_dialogue()
+        else:
+            #TODO Dialog
+            print("Select minimum 1")
+
     def calc_avg(self):
         if not self.df.empty:
             if self.avg_check_box.isChecked():
@@ -56,8 +116,7 @@ class MainWindow:
                     df_mean = self.df[[column]].mean()
                     self.label.setText(f"Average value: \n{df_mean.to_string()}")
         else:
-            #TODO DIALOGUE
-            print("Empty dataframe")
+            self.show_warning_no_csv_dialogue()
 
     def calc_max(self):
         if not self.df.empty:
@@ -69,8 +128,7 @@ class MainWindow:
                     df_mean = self.df[[column]].max()
                     self.label_2.setText(f"Max value: \n{df_mean.to_string()}")
         else:
-            #TODO DIALOGUE
-            print("Empty dataframe")
+            self.show_warning_no_csv_dialogue()
 
     def calc_min(self):
         if not self.df.empty:
@@ -82,8 +140,7 @@ class MainWindow:
                     df_mean = self.df[[column]].min()
                     self.label_3.setText(f"Min value: \n{df_mean.to_string()}")
         else:
-            #TODO DIALOGUE
-            print("Empty dataframe")
+            self.show_warning_no_csv_dialogue()
 
 
     # Loading data from csv file
@@ -135,7 +192,7 @@ class MainWindow:
     # Filtering data by column
     def filter_data(self):
         if self.df.empty:
-            print("First choose file")
+            self.show_warning_no_csv_dialogue()
         else:
             if self.check_index() == 0:
                 self.display_data(self.df)
@@ -161,38 +218,6 @@ class MainWindow:
         self.label_2 = self.window.findChild(QLabel, "label_2")
         self.label_3 = self.window.findChild(QLabel, "label_3")
         self.calc_button = self.window.findChild(QPushButton, "calcButton")
-
-    # Binding methods to UI widgets
-    def bind_methods(self):
-        # Binding methods to buttons
-        if self.load_csv_button:
-            self.load_csv_button.clicked.connect(self.load_data)
-
-        if self.filter_button:
-            self.filter_button.clicked.connect(self.filter_data)
-
-        if self.calc_button:
-            self.calc_button.clicked.connect(self.calc_avg)
-            self.calc_button.clicked.connect(self.calc_max)
-            self.calc_button.clicked.connect(self.calc_min)
-
-        if self.generate_button:
-            self.generate_button.clicked.connect(self.open_chart_dialog)
-
-
-        # Binding methods to comboBox
-        if self.combo_box:
-            self.combo_box.activated.connect(self.check_index)
-
-        # Binding methods to checksBox
-        if self.avg_check_box:
-            self.avg_check_box.stateChanged.connect(self.is_avg_selected)
-
-        if self.max_check_box:
-            self.max_check_box.stateChanged.connect(self.is_max_selected)
-
-        if self.min_check_box:
-            self.min_check_box.stateChanged.connect(self.is_min_selected)
 
     # Showing data on tabel
     def display_data(self, df):
