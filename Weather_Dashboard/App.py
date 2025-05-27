@@ -1,4 +1,4 @@
-from Weather_Dashboard import MainWindow
+from WeatherDashboard import MainWindow
 
 # Run application
 def main():

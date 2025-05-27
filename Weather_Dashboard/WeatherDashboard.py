@@ -2,6 +2,7 @@ import pandas as pd
 from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel
 from PySide6.QtUiTools import QUiLoader
 from TableModel import TableModel
+from GenerateChartDialog import ChartDialogue
 
 # MainWindow
 class MainWindow:
@@ -9,24 +10,14 @@ class MainWindow:
         self.app = QApplication()
         self.loader = QUiLoader()
         self.window = self.loader.load("../Qt_Designer/mainwindow.ui", None)
+        self.window.setWindowTitle("Weather Dashboard")
         self.data_path = None
         self.df = pd.DataFrame()
         self.model = None
         self.columns = None
+        self.available_charts = ["Plot chart", "Scatter chart"]
 
-        # GUI Initialization
-        self.load_csv_button = self.window.findChild(QPushButton, "loadCSVButton")
-        self.table = self.window.findChild(QTableView, "dataTable")
-        self.filter_button = self.window.findChild(QPushButton, "filterButton")
-        self.combo_box = self.window.findChild(QComboBox, "comboBox")
-        self.combo_box.addItem("All")
-        self.avg_check_box = self.window.findChild(QCheckBox, "AVGCheckBox")
-        self.max_check_box = self.window.findChild(QCheckBox, "MAXCheckBox")
-        self.min_check_box = self.window.findChild(QCheckBox, "MINCheckBox")
-        self.label = self.window.findChild(QLabel, "label")
-        self.label_2 = self.window.findChild(QLabel, "label_2")
-        self.label_3 = self.window.findChild(QLabel, "label_3")
-        self.calc_button = self.window.findChild(QPushButton, "calcButton")
+        self.init_ui()
 
         # Binding methods to buttons
         if self.load_csv_button:
@@ -39,6 +30,10 @@ class MainWindow:
             self.calc_button.clicked.connect(self.calc_avg)
             self.calc_button.clicked.connect(self.calc_max)
             self.calc_button.clicked.connect(self.calc_min)
+
+        if self.generate_button:
+            self.generate_button.clicked.connect(self.open_chart_dialog)
+
 
         # Binding methods to comboBox
         if self.combo_box:
@@ -53,6 +48,16 @@ class MainWindow:
 
         if self.min_check_box:
             self.min_check_box.stateChanged.connect(self.is_min_selected)
+
+    def open_chart_dialog(self):
+        dialog = ChartDialogue()
+        result = dialog.show_dialog()
+
+        if result == dialog.dlg.accepted:
+            print("Accept")
+        else:
+            print("Cancel")
+
 
     def is_avg_selected(self) -> bool:
         print(self.avg_check_box.isChecked())
@@ -70,11 +75,11 @@ class MainWindow:
         if not self.df.empty:
             if self.avg_check_box.isChecked():
                 if self.check_index() == 0:
-                    self.label.setText(self.df.mean().to_string())
+                    self.label.setText(f"Average value: \n{self.df.mean().to_string()}")
                 else:
                     column = self.check_text()
                     df_mean = self.df[[column]].mean()
-                    self.label.setText(df_mean.to_string())
+                    self.label.setText(f"Average value: \n{df_mean.to_string()}")
         else:
             #TODO DIALOGUE
             print("Empty dataframe")
@@ -83,11 +88,11 @@ class MainWindow:
         if not self.df.empty:
             if self.max_check_box.isChecked():
                 if self.check_index() == 0:
-                    self.label_2.setText(self.df.max().to_string())
+                    self.label_2.setText(f"Max value: \n{self.df.max().to_string()}")
                 else:
                     column = self.check_text()
                     df_mean = self.df[[column]].max()
-                    self.label_2.setText(df_mean.to_string())
+                    self.label_2.setText(f"Max value: \n{df_mean.to_string()}")
         else:
             #TODO DIALOGUE
             print("Empty dataframe")
@@ -96,11 +101,11 @@ class MainWindow:
         if not self.df.empty:
             if self.min_check_box.isChecked():
                 if self.check_index() == 0:
-                    self.label_3.setText(self.df.min().to_string())
+                    self.label_3.setText(f"Min value: \n{self.df.min().to_string()}")
                 else:
                     column = self.check_text()
                     df_mean = self.df[[column]].min()
-                    self.label_3.setText(df_mean.to_string())
+                    self.label_3.setText(f"Min value: \n{df_mean.to_string()}")
         else:
             #TODO DIALOGUE
             print("Empty dataframe")
@@ -128,6 +133,11 @@ class MainWindow:
         self.clear_combobox(self.combo_box)
         for column in self.columns:
             self.combo_box.addItem(column)
+
+    # Adding available charts to combo box
+    def add_charts_to_combobox(self):
+        for chart in self.available_charts:
+            self.combo_box2.addItem(chart)
 
 
     # Clearing comboBox
@@ -158,6 +168,24 @@ class MainWindow:
                 column = self.check_text()
                 self.display_data(self.df[[column]])
 
+    # Initializing UI
+    def init_ui(self):
+        # GUI Initialization
+        self.load_csv_button = self.window.findChild(QPushButton, "loadCSVButton")
+        self.table = self.window.findChild(QTableView, "dataTable")
+        self.filter_button = self.window.findChild(QPushButton, "filterButton")
+        self.generate_button = self.window.findChild(QPushButton, "generateButton")
+        self.combo_box = self.window.findChild(QComboBox, "comboBox")
+        self.combo_box.addItem("All")
+        self.combo_box2 = self.window.findChild(QComboBox, "comboBox_2")
+        self.add_charts_to_combobox()
+        self.avg_check_box = self.window.findChild(QCheckBox, "AVGCheckBox")
+        self.max_check_box = self.window.findChild(QCheckBox, "MAXCheckBox")
+        self.min_check_box = self.window.findChild(QCheckBox, "MINCheckBox")
+        self.label = self.window.findChild(QLabel, "label")
+        self.label_2 = self.window.findChild(QLabel, "label_2")
+        self.label_3 = self.window.findChild(QLabel, "label_3")
+        self.calc_button = self.window.findChild(QPushButton, "calcButton")
 
     # Showing data on tabel
     def display_data(self, df):
