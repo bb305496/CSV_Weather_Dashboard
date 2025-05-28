@@ -38,6 +38,9 @@ class PlotChartDialog(QDialog):
     def is_legend_selected(self) -> bool:
         return self.legend_check_box.isChecked()
 
+    def is_grid_selected(self) -> bool:
+        return self.legend_check_box.isChecked()
+
     def show_dialog(self):
         return self.dlg.exec()
 
@@ -55,6 +58,7 @@ class PlotChartDialog(QDialog):
         self.title_line_edit = self.dlg.findChild(QLineEdit, "titleLineEdit")
         self.title_line_edit.setPlaceholderText("Leave empty to skip Title label")
         self.legend_check_box = self.dlg.findChild(QCheckBox, "legendCheckBox")
+        self.grid_check_box = self.dlg.findChild(QCheckBox, "gridCheckBox")
 
 
     # Binding methods to UI widgets

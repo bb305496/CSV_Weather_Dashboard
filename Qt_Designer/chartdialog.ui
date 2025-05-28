@@ -191,6 +191,19 @@
     <string>Legend</string>
    </property>
   </widget>
+  <widget class="QCheckBox" name="gridCheckBox">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>190</y>
+     <width>78</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Grid</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

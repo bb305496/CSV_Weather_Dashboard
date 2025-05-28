@@ -81,7 +81,9 @@ class MainWindow:
                 if title:
                     plt.title(title)
                 if dialog.is_legend_selected():
-                    plt.legend()
+                    plt.legend(loc="lower left")
+                if dialog.is_grid_selected():
+                    plt.grid()
                 plt.show()
 
             elif result == QDialog.Rejected:
