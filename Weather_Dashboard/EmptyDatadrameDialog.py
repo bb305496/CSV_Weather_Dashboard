@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QDialog, QPushButton, QComboBox
+from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 import pandas as pd
 
@@ -21,6 +22,6 @@ class EmptyDataFrameDialog(QDialog):
 
     # Binding methods to UI widgets
     def bind_methods(self):
-
         if self.ok_button:
             self.ok_button.clicked.connect(self.dlg.accept)
+

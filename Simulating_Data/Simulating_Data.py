@@ -3,7 +3,7 @@ from numpy import random
 import pandas as pd
 
 # Number of samples
-n = 1000
+n = 30
 random.seed(7)
 # Random data generator
 

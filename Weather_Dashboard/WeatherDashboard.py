@@ -5,6 +5,9 @@ from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
 from EmptyDatadrameDialog import EmptyDataFrameDialog
 import matplotlib.pyplot as plt
+import matplotlib
+
+matplotlib.use('QtAgg')
 
 # MainWindow
 class MainWindow:
@@ -40,7 +43,6 @@ class MainWindow:
         if self.generate_button:
             self.generate_button.clicked.connect(self.open_chart_dialog)
 
-
         # Binding methods to comboBox
         if self.combo_box:
             self.combo_box.activated.connect(self.check_index)
@@ -65,8 +67,23 @@ class MainWindow:
 
             if result == QDialog.Accepted:
                 print("Accept")
-                #plt.plot([1,2,3], [3,4,5])
-                #plt.show()
+                x_axis = dialog.actual_combobox_x_item()
+                y_axis = dialog.actual_combobox_y_item()
+                x_axis_name = dialog.get_xaxis_name()
+                y_axis_name = dialog.get_yaxis_name()
+                title = dialog.get_title()
+
+                plt.plot(self.df[x_axis], self.df[y_axis], label=y_axis_name if y_axis_name else y_axis)
+                if x_axis_name:
+                    plt.xlabel(x_axis_name)
+                if y_axis_name:
+                    plt.ylabel(y_axis_name)
+                if title:
+                    plt.title(title)
+                if dialog.is_legend_selected():
+                    plt.legend()
+                plt.show()
+
             elif result == QDialog.Rejected:
                 print("Cancel")
         else:
@@ -115,8 +132,6 @@ class MainWindow:
                     column = self.check_text()
                     df_mean = self.df[[column]].mean()
                     self.label.setText(f"Average value: \n{df_mean.to_string()}")
-        else:
-            self.show_warning_no_csv_dialogue()
 
     def calc_max(self):
         if not self.df.empty:
@@ -127,8 +142,6 @@ class MainWindow:
                     column = self.check_text()
                     df_mean = self.df[[column]].max()
                     self.label_2.setText(f"Max value: \n{df_mean.to_string()}")
-        else:
-            self.show_warning_no_csv_dialogue()
 
     def calc_min(self):
         if not self.df.empty:
@@ -139,8 +152,6 @@ class MainWindow:
                     column = self.check_text()
                     df_mean = self.df[[column]].min()
                     self.label_3.setText(f"Min value: \n{df_mean.to_string()}")
-        else:
-            self.show_warning_no_csv_dialogue()
 
 
     # Loading data from csv file

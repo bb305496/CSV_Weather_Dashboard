@@ -7,11 +7,27 @@
     <x>0</x>
     <y>0</y>
     <width>250</width>
-    <height>82</height>
+    <height>80</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>250</width>
+    <height>80</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>250</width>
+    <height>80</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/warning_y.png</normaloff>../Icons/warning_y.png</iconset>
   </property>
   <widget class="QPushButton" name="okButton">
    <property name="geometry">
@@ -57,7 +73,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>../Icons/warning.png</pixmap>
+    <pixmap>../Icons/warning_y.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
