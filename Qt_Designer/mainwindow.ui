@@ -197,7 +197,7 @@
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>330</x>
       <y>430</y>
       <width>161</width>
       <height>41</height>
@@ -230,12 +230,37 @@
      <string>Data View</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="exportCSVButton">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>470</y>
+      <width>90</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>75</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Export to CSV</string>
+    </property>
+   </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>480</y>
-      <width>521</width>
+      <x>21</x>
+      <y>481</y>
+      <width>671</width>
       <height>30</height>
      </rect>
     </property>
@@ -244,7 +269,7 @@
       <widget class="QComboBox" name="comboBox_3">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>150</width>
          <height>0</height>
         </size>
        </property>
@@ -266,7 +291,7 @@
       <widget class="QComboBox" name="comboBox_4">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>150</width>
          <height>0</height>
         </size>
        </property>
@@ -276,7 +301,7 @@
       <widget class="QComboBox" name="comboBox_5">
        <property name="minimumSize">
         <size>
-         <width>50</width>
+         <width>40</width>
          <height>0</height>
         </size>
        </property>
