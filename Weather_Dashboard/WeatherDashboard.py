@@ -19,6 +19,7 @@ class MainWindow:
         self.window.setWindowTitle("Weather Dashboard")
         self.data_path = None
         self.df = pd.DataFrame()
+        self.filtered_df = pd.DataFrame()
         self.model = None
         self.columns = None
         self.available_charts = ["Plot chart", "Scatter chart"]
@@ -34,7 +35,7 @@ class MainWindow:
             self.load_csv_button.clicked.connect(self.load_data)
 
         if self.filter_button:
-            self.filter_button.clicked.connect(self.filter_data)
+            self.filter_button.clicked.connect(self.show_single_column)
 
         if self.calc_button:
             self.calc_button.clicked.connect(self.what_calc_selected)
@@ -59,7 +60,63 @@ class MainWindow:
             self.min_check_box.stateChanged.connect(self.is_min_selected)
 
         if self.lower_filter_button:
-            self.lower_filter_button.clicked.connect(lambda: print("Click"))
+            self.lower_filter_button.clicked.connect(self.filter_data)
+
+    def filter_data(self):
+        if not self.df.empty:
+            data_to_show = self.gen_csv_combo_box_1.currentText()
+            filtered_data = self.gen_csv_combo_box_2.currentText()
+            sign = self.gen_csv_combo_box_3.currentText()
+            value = self.value_line_edit.text()
+            #print(type(data_to_show), type(filtered_data), type(sign), type(value))
+
+            if value != "":
+
+                if data_to_show == "All":
+                    if sign == "=":
+                        self.filtered_df = self.df[self.df[filtered_data] == float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == ">":
+                        self.filtered_df = self.df[self.df[filtered_data] > float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == "<":
+                        self.filtered_df = self.df[self.df[filtered_data] < float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == "≥":
+                        self.filtered_df = self.df[self.df[filtered_data] >= float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == "≤":
+                        self.filtered_df = self.df[self.df[filtered_data] <= float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == "≠":
+                        self.filtered_df = self.df[self.df[filtered_data] != float(value)]
+                        self.display_data(self.filtered_df)
+
+                else:
+                    if sign == "=":
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] == float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == ">":
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] > float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == "<":
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] < float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == "≥":
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] >= float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == "≤":
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] <= float(value)]
+                        self.display_data(self.filtered_df)
+                    if sign == "≠":
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] != float(value)]
+                        self.display_data(self.filtered_df)
+
+            else:
+                #TODO Enter value warning
+                print("Wpisz wartość")
+        else:
+            self.show_warning_no_csv_dialogue()
 
     # Opening chart dialog
     def open_chart_dialog(self):
@@ -218,7 +275,7 @@ class MainWindow:
         return ctext
 
     # Filtering data by column
-    def filter_data(self):
+    def show_single_column(self):
         if self.df.empty:
             self.show_warning_no_csv_dialogue()
         else:
@@ -253,7 +310,7 @@ class MainWindow:
         self.add_inequality_sign(self.gen_csv_combo_box_3)
         self.value_line_edit = self.window.findChild(QLineEdit, "valueLineEdit")
         self.value_line_edit.setValidator(QDoubleValidator())
-        self.lower_filter_button = self.window.findChild(QPushButton, "Filte1Button")
+        self.lower_filter_button = self.window.findChild(QPushButton, "Filter1Button")
 
     # Showing data on tabel
     def display_data(self, df):
