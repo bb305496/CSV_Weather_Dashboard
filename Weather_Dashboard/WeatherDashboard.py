@@ -1,6 +1,7 @@
 import pandas as pd
-from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog
+from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog, QLineEdit
 from PySide6.QtUiTools import QUiLoader
+from PySide6.QtGui import QDoubleValidator
 from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
 from EmptyDatadrameDialog import EmptyDataFrameDialog
@@ -56,6 +57,9 @@ class MainWindow:
 
         if self.min_check_box:
             self.min_check_box.stateChanged.connect(self.is_min_selected)
+
+        if self.lower_filter_button:
+            self.lower_filter_button.clicked.connect(lambda: print("Click"))
 
     # Opening chart dialog
     def open_chart_dialog(self):
@@ -178,6 +182,17 @@ class MainWindow:
         self.clear_combobox(self.combo_box)
         for column in self.columns:
             self.combo_box.addItem(column)
+            self.gen_csv_combo_box_1.addItem(column)
+            self.gen_csv_combo_box_2.addItem(column)
+
+    # Adding "= < > <= >="sign to combo box
+    def add_inequality_sign(self, combo_box: QComboBox):
+        combo_box.addItem("=")
+        combo_box.addItem("<")
+        combo_box.addItem(">")
+        combo_box.addItem("≥")
+        combo_box.addItem("≤")
+        combo_box.addItem("≠")
 
     # Adding available charts to combo box
     def add_charts_to_combobox(self):
@@ -231,6 +246,14 @@ class MainWindow:
         self.label_2 = self.window.findChild(QLabel, "label_2")
         self.label_3 = self.window.findChild(QLabel, "label_3")
         self.calc_button = self.window.findChild(QPushButton, "calcButton")
+        self.gen_csv_combo_box_1 = self.window.findChild(QComboBox, "comboBox_3")
+        self.gen_csv_combo_box_1.addItem("All")
+        self.gen_csv_combo_box_2 = self.window.findChild(QComboBox, "comboBox_4")
+        self.gen_csv_combo_box_3 = self.window.findChild(QComboBox, "comboBox_5")
+        self.add_inequality_sign(self.gen_csv_combo_box_3)
+        self.value_line_edit = self.window.findChild(QLineEdit, "valueLineEdit")
+        self.value_line_edit.setValidator(QDoubleValidator())
+        self.lower_filter_button = self.window.findChild(QPushButton, "Filte1Button")
 
     # Showing data on tabel
     def display_data(self, df):
