@@ -155,10 +155,18 @@ class MainWindow:
             first_value = dialog.actual_first_value()
             second_value = dialog.actual_second_value()
             x_axis = dialog.xaxis_value()
+            title = dialog.get_title()
+            x_axis_name = dialog.get_x_axis_name()
+            y_axis_name = dialog.get_y_axis_name()
 
             plt.scatter(df[x_axis], df[first_value])
-
             plt.scatter(df[x_axis], df[second_value])
+            if title:
+                plt.title(title)
+            if x_axis_name:
+                plt.xlabel(x_axis_name)
+            if y_axis_name:
+                plt.ylabel(y_axis_name)
 
             plt.show()
 

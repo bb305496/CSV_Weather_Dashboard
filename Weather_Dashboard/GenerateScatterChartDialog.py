@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QDialog, QPushButton, QComboBox
+from PySide6.QtWidgets import QDialog, QPushButton, QComboBox, QLineEdit
 from PySide6.QtUiTools import QUiLoader
 import pandas as pd
 
@@ -31,6 +31,15 @@ class ScatterCharDialog(QDialog):
     def xaxis_value(self) -> str:
         return self.xaxis_combo_box.currentText()
 
+    def get_title(self) -> str:
+        return self.title_line_edit.text()
+
+    def get_x_axis_name(self) -> str:
+        return self.x_axis_name.text()
+
+    def get_y_axis_name(self) -> str:
+        return self.y_axis_name.text()
+
     def show_dialog(self):
         return self.dlg.exec()
 
@@ -41,6 +50,12 @@ class ScatterCharDialog(QDialog):
         self.first_value_combo_box = self.dlg.findChild(QComboBox, "firstValuecomboBox")
         self.second_value_combo_box = self.dlg.findChild(QComboBox, "secondValuecomboBox")
         self.xaxis_combo_box = self.dlg.findChild(QComboBox, "xAxiscomboBox")
+        self.title_line_edit = self.dlg.findChild(QLineEdit, "titleLineEdit")
+        self.title_line_edit.setPlaceholderText("Leave empty to skip Title label")
+        self.x_axis_name = self.dlg.findChild(QLineEdit, "xAxislineEdit")
+        self.x_axis_name.setPlaceholderText("Leave empty to skip X-axis label")
+        self.y_axis_name = self.dlg.findChild(QLineEdit, "yAxislineEdit")
+        self.y_axis_name.setPlaceholderText("Leave empty to skip Y-axis label")
 
     # Binding methods to UI widgets
     def bind_methods(self):
