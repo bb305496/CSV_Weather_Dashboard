@@ -4,6 +4,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QDoubleValidator
 from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
+from GenerateScatterChartDialog import ScatterCharDialog
 from EmptyDatadrameDialog import EmptyDataFrameDialog
 import matplotlib.pyplot as plt
 import matplotlib
@@ -22,6 +23,8 @@ class MainWindow:
         self.filtered_df = pd.DataFrame()
         self.model = None
         self.columns = None
+        self.show_pressed = False
+        self.filter_pressed = False
         self.available_charts = ["Plot chart", "Scatter chart"]
 
         self.init_ui()
@@ -74,7 +77,8 @@ class MainWindow:
             #print(type(data_to_show), type(filtered_data), type(sign), type(value))
 
             if value != "":
-
+                self.filter_pressed = True
+                self.show_pressed = False
                 if data_to_show == "All":
                     if sign == "=":
                         self.filtered_df = self.df[self.df[filtered_data] == float(value.replace(',', '.'))]
@@ -126,36 +130,68 @@ class MainWindow:
         if self.df.empty:
             self.show_warning_no_csv_dialogue()
         elif self.combo_box2.currentText() == self.available_charts[0]:
-            dialog = PlotChartDialog(self.df.columns)
-            result = dialog.show_dialog()
+            if self.show_pressed:
+                self.show_plot_chart_dialog(self.df)
+            elif self.filter_pressed:
+                self.show_plot_chart_dialog(self.filtered_df)
+        elif self.combo_box2.currentText() == self.available_charts[1]:
+            if self.show_pressed:
+                self.show_scatter_chart_dialog(self.df)
+            elif self.filter_pressed:
+                self.show_scatter_chart_dialog(self.filtered_df)
 
-            if result == QDialog.Accepted:
-                print("Accept")
-                x_axis = dialog.actual_combobox_x_item()
-                y_axis = dialog.actual_combobox_y_item()
-                x_axis_name = dialog.get_xaxis_name()
-                y_axis_name = dialog.get_yaxis_name()
-                title = dialog.get_title()
 
-                plt.plot(self.df[x_axis], self.df[y_axis], label=y_axis_name if y_axis_name else y_axis)
-                if x_axis_name:
-                    plt.xlabel(x_axis_name)
-                if y_axis_name:
-                    plt.ylabel(y_axis_name)
-                if title:
-                    plt.title(title)
-                if dialog.is_legend_selected():
-                    plt.legend(loc="lower left")
-                if dialog.is_grid_selected():
-                    plt.grid()
-                plt.show()
 
-            elif result == QDialog.Rejected:
-                print("Cancel")
         else:
-            #TODO Scatter plot
+            #TODO more charts
             print("Wrong Combobox")
 
+    def show_scatter_chart_dialog(self, df: pd.DataFrame):
+        dialog = ScatterCharDialog(df.columns)
+        result = dialog.show_dialog()
+
+        if result == QDialog.Accepted:
+            print("Accept")
+            first_value = dialog.actual_first_value()
+            second_value = dialog.actual_second_value()
+            x_axis = dialog.xaxis_value()
+
+            plt.scatter(df[x_axis], df[first_value])
+
+            plt.scatter(df[x_axis], df[second_value])
+
+            plt.show()
+
+        elif result == QDialog.Rejected:
+            print("Cancel")
+
+    def show_plot_chart_dialog(self, df: pd.DataFrame):
+        dialog = PlotChartDialog(df.columns)
+        result = dialog.show_dialog()
+
+        if result == QDialog.Accepted:
+            print("Accept")
+            x_axis = dialog.actual_combobox_x_item()
+            y_axis = dialog.actual_combobox_y_item()
+            x_axis_name = dialog.get_xaxis_name()
+            y_axis_name = dialog.get_yaxis_name()
+            title = dialog.get_title()
+
+            plt.plot(df[x_axis], df[y_axis], label=y_axis_name if y_axis_name else y_axis)
+            if x_axis_name:
+                plt.xlabel(x_axis_name)
+            if y_axis_name:
+                plt.ylabel(y_axis_name)
+            if title:
+                plt.title(title)
+            if dialog.is_legend_selected():
+                plt.legend(loc="lower left")
+            if dialog.is_grid_selected():
+                plt.grid()
+            plt.show()
+
+        elif result == QDialog.Rejected:
+            print("Cancel")
 
     def is_avg_selected(self) -> bool:
         print(self.avg_check_box.isChecked())
@@ -227,7 +263,7 @@ class MainWindow:
             if file_patch:
                 try:
                     self.filtered_df.to_csv(file_patch[0], index=False, sep=";")
-                except Exception as e:
+                except:
                     print("Saving data ERROR")
         else:
             #TODO no filtered_df
@@ -246,6 +282,7 @@ class MainWindow:
                 self.df = pd.read_csv(self.data_path, sep=";")
                 self.display_data(self.df)
                 self.add_items_to_combobox(self.df)
+                self.show_pressed = True
             else:
                 print("Operation canceled")
 
@@ -299,9 +336,13 @@ class MainWindow:
         else:
             if self.check_index() == 0:
                 self.display_data(self.df)
+                self.show_pressed = True
+                self.filter_pressed = False
             else:
                 column = self.check_text()
                 self.display_data(self.df[[column]])
+                self.show_pressed = True
+                self.filter_pressed = False
 
     # Initializing UI
     def init_ui(self):

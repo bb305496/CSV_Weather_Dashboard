@@ -6,7 +6,7 @@ class PlotChartDialog(QDialog):
     def __init__(self, colums: pd.DataFrame):
         super().__init__()
         self.loader = QUiLoader()
-        self.dlg = self.loader.load("../Qt_Designer/chartdialog.ui")
+        self.dlg = self.loader.load("../Qt_Designer/plotchartdialog.ui")
         self.dlg.setWindowTitle("Chart generator")
         self.colums = colums
 
