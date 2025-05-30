@@ -2,6 +2,7 @@ import pandas as pd
 from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog, QLineEdit, QMessageBox
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QDoubleValidator
+from PySide6.QtCore import QTimer
 from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
 from GenerateScatterChartDialog import ScatterCharDialog
@@ -120,10 +121,22 @@ class MainWindow:
                         self.display_data(self.filtered_df)
 
             else:
-                #TODO Enter value warning
+                self.highlight_empty_value_field()
                 print("Wpisz wartość")
         else:
             self.show_warning_no_csv_dialogue()
+
+    def highlight_empty_value_field(self):
+        for i in range(3):
+            QTimer.singleShot(i * 500, self.pulse_red_field)
+
+    def pulse_red_field(self):
+        original_style = self.value_line_edit.styleSheet()
+
+        self.value_line_edit.setStyleSheet("""QLineEdit {background-color: #ff9999; border: 1px solid red;}""")
+
+        QTimer.singleShot(250, lambda: self.value_line_edit.setStyleSheet(original_style))
+
 
     # Opening chart dialog
     def open_chart_dialog(self):
@@ -230,8 +243,28 @@ class MainWindow:
         if self.df.empty:
             self.show_warning_no_csv_dialogue()
         else:
-            #TODO Dialog
+            self.highlight_checkboxes()
             print("Select minimum 1")
+
+    def highlight_checkboxes(self):
+        checkboxes = [self.avg_check_box, self.max_check_box, self.min_check_box]
+
+        for i in range(3):
+            QTimer.singleShot(i * 500, lambda: self.pulse_red_checkboxes(checkboxes))
+
+    def pulse_red_checkboxes(self, checkboxes):
+        original_styles = []
+        for checkbox in checkboxes:
+            original_styles.append(checkbox.styleSheet())
+
+        for checkbox in checkboxes:
+            checkbox.setStyleSheet("""QCheckBox::indicator {border: 2px solid #ff4444;}""")
+
+        QTimer.singleShot(250, lambda: self.restore_checkbox_styles(checkboxes, original_styles))
+
+    def restore_checkbox_styles(self, checkboxes, original_styles):
+        for checkbox, style in zip(checkboxes, original_styles):
+            checkbox.setStyleSheet(style)
 
     def calc_avg(self):
         if not self.df.empty:
@@ -377,6 +410,7 @@ class MainWindow:
         self.add_inequality_sign(self.gen_csv_combo_box_3)
         self.value_line_edit = self.window.findChild(QLineEdit, "valueLineEdit")
         self.value_line_edit.setValidator(QDoubleValidator())
+        self.value_line_edit.setPlaceholderText("Enter value")
         self.lower_filter_button = self.window.findChild(QPushButton, "Filter1Button")
         self.export_tocsv_button = self.window.findChild(QPushButton, "exportCSVButton")
 

@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d489afc-102e-4fbc-9183-288d06bb94db" name="Changes" comment="Dynamic data filtering by column">
+      <change afterPath="$PROJECT_DIR$/Qt_Designer/warning.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Weather_Dashboard/WarningDialog.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Qt_Designer/scatterchartdialog.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt_Designer/scatterchartdialog.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Weather_Dashboard/GenerateScatterChartDialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Weather_Dashboard/GenerateScatterChartDialog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt_Designer/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt_Designer/mainwindow.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Weather_Dashboard/EmptyDatadrameDialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Weather_Dashboard/EmptyDatadrameDialog.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Weather_Dashboard/WeatherDashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/Weather_Dashboard/WeatherDashboard.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,22 +47,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.App.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Simulating_Data.executor&quot;: &quot;Run&quot;,
-    &quot;Python.TableModel.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Weather_Dashboard.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Bartek/Desktop/Git/CSV_Weather_Dashboard/Icons&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.App.executor": "Run",
+    "Python.Simulating_Data.executor": "Run",
+    "Python.TableModel.executor": "Run",
+    "Python.Weather_Dashboard.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Bartek/Desktop/Git/CSV_Weather_Dashboard/Qt_Designer",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bartek\Desktop\Git\CSV_Weather_Dashboard\Qt_Designer" />
       <recent name="C:\Users\Bartek\Desktop\Git\CSV_Weather_Dashboard\Icons" />
     </key>
     <key name="MoveFile.RECENT_KEYS">

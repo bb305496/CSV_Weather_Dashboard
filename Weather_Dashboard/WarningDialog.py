@@ -1,11 +1,11 @@
 from PySide6.QtWidgets import QDialog, QPushButton
 from PySide6.QtUiTools import QUiLoader
 
-class EmptyDataFrameDialog(QDialog):
+class WarningDialog(QDialog):
     def __init__(self):
         super().__init__()
         self.loader = QUiLoader()
-        self.dlg = self.loader.load("../Qt_Designer/emptydataframe.ui")
+        self.dlg = self.loader.load("../Qt_Designer/warning.ui")
         self.dlg.setWindowTitle("Warning")
 
         self.init_ui()
@@ -22,4 +22,3 @@ class EmptyDataFrameDialog(QDialog):
     def bind_methods(self):
         if self.ok_button:
             self.ok_button.clicked.connect(self.dlg.accept)
-
