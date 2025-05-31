@@ -7,6 +7,7 @@ from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
 from GenerateScatterChartDialog import ScatterCharDialog
 from EmptyDatadrameDialog import EmptyDataFrameDialog
+from WarningDialog import WarningDialog
 import matplotlib.pyplot as plt
 import matplotlib
 
@@ -194,11 +195,21 @@ class MainWindow:
             print("Accept")
             x_axis = dialog.actual_combobox_x_item()
             y_axis = dialog.actual_combobox_y_item()
+            x2_axis = dialog.actual_combobox_x2_item()
+            y2_axis = dialog.actual_combobox_y2_item()
             x_axis_name = dialog.get_xaxis_name()
             y_axis_name = dialog.get_yaxis_name()
             title = dialog.get_title()
 
+            print(x2_axis)
+
             plt.plot(df[x_axis], df[y_axis], label=y_axis_name if y_axis_name else y_axis)
+            if x2_axis != "None" and y2_axis != "None":
+                plt.plot(df[x2_axis], df[y2_axis], label=y2_axis)
+            elif x2_axis != "None":
+                plt.plot(df[x2_axis], df[y_axis], label=x2_axis)
+            elif y2_axis != "None":
+                plt.plot(df[x_axis], df[y2_axis], label=y2_axis)
             if x_axis_name:
                 plt.xlabel(x_axis_name)
             if y_axis_name:
@@ -228,6 +239,13 @@ class MainWindow:
 
     def show_warning_no_csv_dialogue(self):
         dialog = EmptyDataFrameDialog()
+        result = dialog.show_dialog()
+
+        if result == QDialog.Accepted:
+            print("OK pressed")
+
+    def show_warning_dialog(self, warning_text, font_size: int = 16):
+        dialog = WarningDialog(warning_text, font_size)
         result = dialog.show_dialog()
 
         if result == QDialog.Accepted:
@@ -308,6 +326,7 @@ class MainWindow:
                     print("Saving data ERROR")
         else:
             #TODO no filtered_df
+            self.show_warning_dialog("No Filtered Data")
             print("No df")
 
     # Loading data from csv file

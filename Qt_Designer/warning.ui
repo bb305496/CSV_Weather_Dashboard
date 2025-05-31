@@ -42,12 +42,12 @@
     <string>OK</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="textLabel">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>80</x>
      <y>5</y>
-     <width>131</width>
+     <width>161</width>
      <height>41</height>
     </rect>
    </property>
@@ -58,6 +58,9 @@
    </property>
    <property name="text">
     <string>Warning</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
