@@ -1022,8 +1022,8 @@ QProgressBar::chunk
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>240</y>
+     <x>200</x>
+     <y>230</y>
      <width>192</width>
      <height>30</height>
     </rect>

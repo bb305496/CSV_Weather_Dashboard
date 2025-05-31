@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>610</height>
+    <width>720</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>700</width>
-    <height>610</height>
+    <width>720</width>
+    <height>700</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>700</width>
-    <height>610</height>
+    <width>720</width>
+    <height>700</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -1063,7 +1063,7 @@ QProgressBar::chunk
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>430</x>
       <y>500</y>
       <width>221</width>
       <height>41</height>
@@ -1117,7 +1117,7 @@ QProgressBar::chunk
    <widget class="QPushButton" name="exportCSVButton">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>620</x>
       <y>440</y>
       <width>92</width>
       <height>41</height>
@@ -1144,7 +1144,7 @@ QProgressBar::chunk
      <rect>
       <x>11</x>
       <y>441</y>
-      <width>581</width>
+      <width>604</width>
       <height>42</height>
      </rect>
     </property>
@@ -1197,7 +1197,14 @@ QProgressBar::chunk
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox">
+       <property name="minimum">
+        <double>-1000000000.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>1000000000.000000000000000</double>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="Filter1Button">
@@ -1220,7 +1227,7 @@ QProgressBar::chunk
     </property>
     <property name="geometry">
      <rect>
-      <x>480</x>
+      <x>490</x>
       <y>0</y>
       <width>201</width>
       <height>47</height>
@@ -1241,7 +1248,7 @@ QProgressBar::chunk
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>510</x>
       <y>60</y>
       <width>161</width>
       <height>31</height>
@@ -1274,7 +1281,7 @@ QProgressBar::chunk
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>510</x>
       <y>90</y>
       <width>161</width>
       <height>291</height>
@@ -1318,7 +1325,7 @@ QProgressBar::chunk
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>370</x>
       <y>550</y>
       <width>321</width>
       <height>30</height>
@@ -1343,13 +1350,69 @@ QProgressBar::chunk
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>500</y>
+      <width>221</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>24</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Count columns</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>550</y>
+      <width>321</width>
+      <height>82</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QPushButton" name="countPushButton">
+       <property name="text">
+        <string>Count</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="countLabel">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>80</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Number of columns</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>700</width>
+     <width>720</width>
      <height>24</height>
     </rect>
    </property>

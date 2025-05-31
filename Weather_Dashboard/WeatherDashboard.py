@@ -50,6 +50,9 @@ class MainWindow:
         if self.generate_button:
             self.generate_button.clicked.connect(self.open_chart_dialog)
 
+        if self.count_button:
+            self.count_button.clicked.connect(self.count_columns)
+
         # Binding methods to comboBox
         if self.combo_box:
             self.combo_box.activated.connect(self.check_index)
@@ -69,6 +72,31 @@ class MainWindow:
 
         if self.export_tocsv_button:
             self.export_tocsv_button.clicked.connect(self.save_data)
+
+    def count_columns(self):
+        if self.df.empty:
+            self.show_warning_no_csv_dialogue()
+        else:
+            if self.show_pressed:
+                self.count_df_columns()
+            elif self.filter_pressed:
+                self.count_filtered_df_columns()
+
+    def count_df_columns(self):
+        if self.check_index() == 0:
+            self.count_label.setText(f"Number of: \n{self.df.count().to_string()}")
+        else:
+            column = self.check_text()
+            df_count = self.df[[column]].count()
+            self.count_label.setText(f"Number of: \n{df_count.to_string()}")
+
+    def count_filtered_df_columns(self):
+        if self.gen_csv_combo_box_1.currentText() == "All":
+            self.count_label.setText(f"Number of: \n{self.filtered_df.count().to_string()}")
+        else:
+            column = self.gen_csv_combo_box_1.currentText()
+            df_count = self.filtered_df[[column]].count()
+            self.count_label.setText(f"Number of: \n{df_count.to_string()}")
 
     def filter_data(self):
         if not self.df.empty:
@@ -156,11 +184,14 @@ class MainWindow:
                 self.show_scatter_chart_dialog(self.df)
             elif self.filter_pressed:
                 self.show_scatter_chart_dialog(self.filtered_df)
-
-
-
         else:
             #TODO more charts
+            # Pie Plot
+            # Area Plot
+            # Bar Graph
+            # Histogram
+            # Box Plot
+            # Heatmap
             print("Wrong Combobox")
 
     def show_scatter_chart_dialog(self, df: pd.DataFrame):
@@ -338,7 +369,6 @@ class MainWindow:
                 except:
                     print("Saving data ERROR")
         else:
-            #TODO no filtered_df
             self.show_warning_dialog("No Filtered Data")
             print("No df")
 
@@ -443,6 +473,8 @@ class MainWindow:
         self.value_spin_box = self.window.findChild(QDoubleSpinBox, "doubleSpinBox")
         self.lower_filter_button = self.window.findChild(QPushButton, "Filter1Button")
         self.export_tocsv_button = self.window.findChild(QPushButton, "exportCSVButton")
+        self.count_button = self.window.findChild(QPushButton, "countPushButton")
+        self.count_label = self.window.findChild(QLabel, "countLabel")
 
     # Showing data on tabel
     def display_data(self, df):
