@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8d489afc-102e-4fbc-9183-288d06bb94db" name="Changes" comment="Dynamic data filtering by column">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data/Weather_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Data/Weather_data.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Qt_Designer/plotchartdialog.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt_Designer/plotchartdialog.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Qt_Designer/warning.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt_Designer/warning.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Weather_Dashboard/GeneratePlotChartDialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Weather_Dashboard/GeneratePlotChartDialog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Weather_Dashboard/WarningDialog.py" beforeDir="false" afterPath="$PROJECT_DIR$/Weather_Dashboard/WarningDialog.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Weather_Dashboard/WeatherDashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/Weather_Dashboard/WeatherDashboard.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

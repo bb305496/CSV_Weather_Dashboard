@@ -128,8 +128,11 @@ class MainWindow:
             self.show_warning_no_csv_dialogue()
 
     def highlight_empty_value_field(self):
+        self.lower_filter_button.setEnabled(False)
         for i in range(3):
             QTimer.singleShot(i * 500, self.pulse_red_field)
+
+        QTimer.singleShot(1500, lambda: self.lower_filter_button.setEnabled(True))
 
     def pulse_red_field(self):
         original_style = self.value_line_edit.styleSheet()
@@ -260,15 +263,18 @@ class MainWindow:
             self.calc_min()
         if self.df.empty:
             self.show_warning_no_csv_dialogue()
-        else:
+        elif not self.is_avg_selected() and not self.is_max_selected() and not self.is_min_selected():
             self.highlight_checkboxes()
             print("Select minimum 1")
 
     def highlight_checkboxes(self):
+        self.calc_button.setEnabled(False)
         checkboxes = [self.avg_check_box, self.max_check_box, self.min_check_box]
 
         for i in range(3):
             QTimer.singleShot(i * 500, lambda: self.pulse_red_checkboxes(checkboxes))
+
+        QTimer.singleShot(1500, lambda: self.calc_button.setEnabled(True))
 
     def pulse_red_checkboxes(self, checkboxes):
         original_styles = []
