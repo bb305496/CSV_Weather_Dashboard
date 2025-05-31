@@ -134,11 +134,11 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>120</y>
+     <y>110</y>
      <width>361</width>
      <height>68</height>
     </rect>
@@ -181,6 +181,32 @@
        <widget class="QLineEdit" name="yAxislineEdit"/>
       </item>
      </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>200</y>
+     <width>117</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_6">
+    <item>
+     <widget class="QCheckBox" name="legendCheckBox">
+      <property name="text">
+       <string>Legend</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="gridCheckBox">
+      <property name="text">
+       <string>Grid</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

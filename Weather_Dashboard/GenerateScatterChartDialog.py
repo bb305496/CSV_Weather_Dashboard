@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QDialog, QPushButton, QComboBox, QLineEdit
+from PySide6.QtWidgets import QDialog, QPushButton, QComboBox, QLineEdit, QCheckBox
 from PySide6.QtUiTools import QUiLoader
 import pandas as pd
 
@@ -40,6 +40,12 @@ class ScatterCharDialog(QDialog):
     def get_y_axis_name(self) -> str:
         return self.y_axis_name.text()
 
+    def is_legend_selected(self) -> bool:
+        return self.legend_check_box.isChecked()
+
+    def is_grid_selected(self) -> bool:
+        return self.grid_check_box.isChecked()
+
     def show_dialog(self):
         return self.dlg.exec()
 
@@ -49,6 +55,7 @@ class ScatterCharDialog(QDialog):
         self.generate_button = self.dlg.findChild(QPushButton, "generateButton")
         self.first_value_combo_box = self.dlg.findChild(QComboBox, "firstValuecomboBox")
         self.second_value_combo_box = self.dlg.findChild(QComboBox, "secondValuecomboBox")
+        self.second_value_combo_box.addItem("None")
         self.xaxis_combo_box = self.dlg.findChild(QComboBox, "xAxiscomboBox")
         self.title_line_edit = self.dlg.findChild(QLineEdit, "titleLineEdit")
         self.title_line_edit.setPlaceholderText("Leave empty to skip Title label")
@@ -56,6 +63,8 @@ class ScatterCharDialog(QDialog):
         self.x_axis_name.setPlaceholderText("Leave empty to skip X-axis label")
         self.y_axis_name = self.dlg.findChild(QLineEdit, "yAxislineEdit")
         self.y_axis_name.setPlaceholderText("Leave empty to skip Y-axis label")
+        self.legend_check_box = self.dlg.findChild(QCheckBox, "legendCheckBox")
+        self.grid_check_box = self.dlg.findChild(QCheckBox, "gridCheckBox")
 
     # Binding methods to UI widgets
     def bind_methods(self):

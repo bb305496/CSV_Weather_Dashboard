@@ -176,15 +176,21 @@ class MainWindow:
             x_axis_name = dialog.get_x_axis_name()
             y_axis_name = dialog.get_y_axis_name()
 
-            plt.scatter(df[x_axis], df[first_value])
-            plt.scatter(df[x_axis], df[second_value])
+            plt.scatter(df[x_axis], df[first_value], label= first_value)
+            if second_value != "None":
+                plt.scatter(df[x_axis], df[second_value], label= second_value)
             if title:
                 plt.title(title)
             if x_axis_name:
                 plt.xlabel(x_axis_name)
             if y_axis_name:
                 plt.ylabel(y_axis_name)
+            if dialog.is_legend_selected():
+                plt.legend(loc="lower left")
+            if dialog.is_grid_selected():
+                plt.grid()
 
+            plt.tight_layout()
             plt.show()
 
         elif result == QDialog.Rejected:
@@ -223,6 +229,7 @@ class MainWindow:
                 plt.legend(loc="lower left")
             if dialog.is_grid_selected():
                 plt.grid()
+            plt.tight_layout()
             plt.show()
 
         elif result == QDialog.Rejected:
