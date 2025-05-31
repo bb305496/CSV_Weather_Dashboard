@@ -207,7 +207,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="valueLineEdit"/>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
      </item>
      <item>
       <widget class="QPushButton" name="Filter1Button">
@@ -248,7 +248,7 @@
      <enum>Qt::TextFormat::AutoText</enum>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>500</x>
@@ -281,7 +281,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>500</x>
@@ -325,7 +325,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>190</x>

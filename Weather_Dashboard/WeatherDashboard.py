@@ -1,5 +1,5 @@
 import pandas as pd
-from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog, QLineEdit, QMessageBox
+from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog, QLineEdit, QMessageBox, QDoubleSpinBox
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtGui import QDoubleValidator
 from PySide6.QtCore import QTimer
@@ -75,7 +75,7 @@ class MainWindow:
             data_to_show = self.gen_csv_combo_box_1.currentText()
             filtered_data = self.gen_csv_combo_box_2.currentText()
             sign = self.gen_csv_combo_box_3.currentText()
-            value = self.value_line_edit.text()
+            value = self.value_spin_box.value()
             #print(type(data_to_show), type(filtered_data), type(sign), type(value))
 
             if value != "":
@@ -83,42 +83,42 @@ class MainWindow:
                 self.show_pressed = False
                 if data_to_show == "All":
                     if sign == "=":
-                        self.filtered_df = self.df[self.df[filtered_data] == float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[self.df[filtered_data] == value]
                         self.display_data(self.filtered_df)
                     if sign == ">":
-                        self.filtered_df = self.df[self.df[filtered_data] > float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[self.df[filtered_data] > value]
                         self.display_data(self.filtered_df)
                     if sign == "<":
-                        self.filtered_df = self.df[self.df[filtered_data] < float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[self.df[filtered_data] < value]
                         self.display_data(self.filtered_df)
                     if sign == "≥":
-                        self.filtered_df = self.df[self.df[filtered_data] >= float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[self.df[filtered_data] >= value]
                         self.display_data(self.filtered_df)
                     if sign == "≤":
-                        self.filtered_df = self.df[self.df[filtered_data] <= float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[self.df[filtered_data] <= value]
                         self.display_data(self.filtered_df)
                     if sign == "≠":
-                        self.filtered_df = self.df[self.df[filtered_data] != float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[self.df[filtered_data] != value]
                         self.display_data(self.filtered_df)
 
                 else:
                     if sign == "=":
-                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] == float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] == value]
                         self.display_data(self.filtered_df)
                     if sign == ">":
-                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] > float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] > value]
                         self.display_data(self.filtered_df)
                     if sign == "<":
-                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] < float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] < value]
                         self.display_data(self.filtered_df)
                     if sign == "≥":
-                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] >= float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] >= value]
                         self.display_data(self.filtered_df)
                     if sign == "≤":
-                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] <= float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] <= value]
                         self.display_data(self.filtered_df)
                     if sign == "≠":
-                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] != float(value.replace(',', '.'))]
+                        self.filtered_df = self.df[[data_to_show]][self.df[filtered_data] != value]
                         self.display_data(self.filtered_df)
 
             else:
@@ -135,11 +135,11 @@ class MainWindow:
         QTimer.singleShot(1500, lambda: self.lower_filter_button.setEnabled(True))
 
     def pulse_red_field(self):
-        original_style = self.value_line_edit.styleSheet()
+        original_style = self.value_spin_box.styleSheet()
 
-        self.value_line_edit.setStyleSheet("""QLineEdit {background-color: #ff9999; border: 1px solid red;}""")
+        self.value_spin_box.setStyleSheet("""QLineEdit {background-color: #ff9999; border: 1px solid red;}""")
 
-        QTimer.singleShot(250, lambda: self.value_line_edit.setStyleSheet(original_style))
+        QTimer.singleShot(250, lambda: self.value_spin_box.setStyleSheet(original_style))
 
 
     # Opening chart dialog
@@ -440,9 +440,7 @@ class MainWindow:
         self.gen_csv_combo_box_2 = self.window.findChild(QComboBox, "comboBox_4")
         self.gen_csv_combo_box_3 = self.window.findChild(QComboBox, "comboBox_5")
         self.add_inequality_sign(self.gen_csv_combo_box_3)
-        self.value_line_edit = self.window.findChild(QLineEdit, "valueLineEdit")
-        self.value_line_edit.setValidator(QDoubleValidator())
-        self.value_line_edit.setPlaceholderText("Enter value")
+        self.value_spin_box = self.window.findChild(QDoubleSpinBox, "doubleSpinBox")
         self.lower_filter_button = self.window.findChild(QPushButton, "Filter1Button")
         self.export_tocsv_button = self.window.findChild(QPushButton, "exportCSVButton")
 
