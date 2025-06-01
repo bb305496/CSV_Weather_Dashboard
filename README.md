@@ -216,6 +216,11 @@ I welcome:
 - Pull requests with improvements
 - Interface translations
 
+## 📦 Changelog
+
+### [1.0.0] – 01.06.2025
+- Initial release
+
 ## 📄 License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
