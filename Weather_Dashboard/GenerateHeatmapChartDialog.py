@@ -1,5 +1,6 @@
-from PySide6.QtWidgets import QDialog, QPushButton
+from PySide6.QtWidgets import QDialog, QPushButton, QLineEdit
 from PySide6.QtUiTools import QUiLoader
+import pandas as pd
 
 class HeatmapChartDialog(QDialog):
     def __init__(self):
@@ -11,10 +12,15 @@ class HeatmapChartDialog(QDialog):
         self.init_ui()
         self.bind_methods()
 
+    def get_title(self) ->str:
+        return self.title_line_edit.text()
+
     # Initializing UI
     def init_ui(self):
         self.cancel_button = self.dlg.findChild(QPushButton, "cancelButton")
         self.generate_button = self.dlg.findChild(QPushButton, "generateButton")
+        self.title_line_edit = self.dlg.findChild(QLineEdit, "titleLineEdit")
+        self.title_line_edit.setPlaceholderText("Leave empty to skip Title label")
 
     # Binding methods to UI widgets
     def bind_methods(self):

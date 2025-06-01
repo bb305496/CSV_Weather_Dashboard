@@ -1,7 +1,8 @@
 import pandas as pd
-from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog, QLineEdit, QMessageBox, QDoubleSpinBox
+from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog, QDoubleSpinBox
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, QFile
+from PySide6.QtGui import QAction
 from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
 from GenerateScatterChartDialog import ScatterCharDialog
@@ -10,6 +11,7 @@ from EmptyDatadrameDialog import EmptyDataFrameDialog
 from WarningDialog import WarningDialog
 import matplotlib.pyplot as plt
 import matplotlib
+import seaborn as sns
 
 matplotlib.use('QtAgg')
 
@@ -28,6 +30,10 @@ class MainWindow:
         self.show_pressed = False
         self.filter_pressed = False
         self.available_charts = ["Plot chart", "Scatter chart", "Heatmap"]
+        file = QFile("../Stylesheet/Combinear.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
 
         self.init_ui()
         self.bind_methods()
@@ -72,6 +78,24 @@ class MainWindow:
 
         if self.export_tocsv_button:
             self.export_tocsv_button.clicked.connect(self.save_data)
+
+        if self.dark_theme_action:
+            self.dark_theme_action.triggered.connect(self.set_dark_theme)
+
+        if self.light_theme_action:
+            self.light_theme_action.triggered.connect(self.set_light_theme)
+
+    def set_dark_theme(self):
+        file = QFile("../Stylesheet/Combinear.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_light_theme(self):
+        file = QFile("../Stylesheet/Integrid.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
 
     def count_columns(self):
         if self.df.empty:
@@ -202,6 +226,13 @@ class MainWindow:
 
         if result == QDialog.Accepted:
             print("Accept")
+            title = dialog.get_title()
+
+            sns.heatmap(self.df.corr(numeric_only=True), annot=True)
+            if title:
+                plt.title(title)
+
+            plt.show()
         elif result == QDialog.Rejected:
             print("Cancel")
 
@@ -383,6 +414,17 @@ class MainWindow:
             self.show_warning_dialog("No Filtered Data")
             print("No df")
 
+    # Convert "," to "."
+    def convert_commas_to_dots(self, df: pd.DataFrame):
+        for col in df.columns:
+            if df[col].dtype == 'object':
+                df[col] = df[col].str.replace(',', '.', regex=False)
+                try:
+                    df[col] = df[col].astype(float)
+                except ValueError:
+                    pass
+        return df
+
     # Loading data from csv file
     def load_data(self):
         # Open File Dialog
@@ -394,6 +436,7 @@ class MainWindow:
             self.data_path = fname[0]
             if len(self.data_path) != 0:
                 self.df = pd.read_csv(self.data_path, sep=";")
+                self.df = self.convert_commas_to_dots(self.df)
                 self.display_data(self.df)
                 self.add_items_to_combobox(self.df)
                 self.show_pressed = True
@@ -485,7 +528,8 @@ class MainWindow:
         self.lower_filter_button = self.window.findChild(QPushButton, "Filter1Button")
         self.export_tocsv_button = self.window.findChild(QPushButton, "exportCSVButton")
         self.count_button = self.window.findChild(QPushButton, "countPushButton")
-        self.count_label = self.window.findChild(QLabel, "countLabel")
+        self.light_theme_action = self.window.findChild(QAction, "actionLight")
+        self.dark_theme_action = self.window.findChild(QAction, "actionDark")
 
     # Showing data on tabel
     def display_data(self, df):
