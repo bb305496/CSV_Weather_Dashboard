@@ -227,10 +227,16 @@ class MainWindow:
         if result == QDialog.Accepted:
             print("Accept")
             title = dialog.get_title()
+            x_axis_name = dialog.get_xaxis_name()
+            y_axis_name = dialog.get_yaxis_name()
 
-            sns.heatmap(self.df.corr(numeric_only=True), annot=True)
+            sns.heatmap(self.df.corr(numeric_only=True), annot=True, linewidths=.5)
             if title:
                 plt.title(title)
+            if x_axis_name:
+                plt.xlabel(x_axis_name)
+            if y_axis_name:
+                plt.ylabel(y_axis_name)
 
             plt.show()
         elif result == QDialog.Rejected:

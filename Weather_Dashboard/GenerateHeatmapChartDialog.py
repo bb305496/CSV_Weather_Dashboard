@@ -15,12 +15,22 @@ class HeatmapChartDialog(QDialog):
     def get_title(self) ->str:
         return self.title_line_edit.text()
 
+    def get_xaxis_name(self) -> str:
+        return self.xaxis_line_edit.text()
+
+    def get_yaxis_name(self) -> str:
+        return self.yaxis_line_edit.text()
+
     # Initializing UI
     def init_ui(self):
         self.cancel_button = self.dlg.findChild(QPushButton, "cancelButton")
         self.generate_button = self.dlg.findChild(QPushButton, "generateButton")
         self.title_line_edit = self.dlg.findChild(QLineEdit, "titleLineEdit")
         self.title_line_edit.setPlaceholderText("Leave empty to skip Title label")
+        self.xaxis_line_edit = self.dlg.findChild(QLineEdit, "xAxislineEdit")
+        self.xaxis_line_edit.setPlaceholderText("Leave empty to skip X-axis label")
+        self.yaxis_line_edit = self.dlg.findChild(QLineEdit, "yAxislineEdit")
+        self.yaxis_line_edit.setPlaceholderText("Leave empty to skip Y-axis label")
 
     # Binding methods to UI widgets
     def bind_methods(self):
