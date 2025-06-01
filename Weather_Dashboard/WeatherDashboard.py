@@ -229,8 +229,9 @@ class MainWindow:
             title = dialog.get_title()
             x_axis_name = dialog.get_xaxis_name()
             y_axis_name = dialog.get_yaxis_name()
+            color = dialog.get_color()
 
-            sns.heatmap(self.df.corr(numeric_only=True), annot=True, linewidths=.5)
+            sns.heatmap(self.df.corr(numeric_only=True), annot=True, linewidths=.5, cmap=color)
             if title:
                 plt.title(title)
             if x_axis_name:
@@ -534,6 +535,7 @@ class MainWindow:
         self.lower_filter_button = self.window.findChild(QPushButton, "Filter1Button")
         self.export_tocsv_button = self.window.findChild(QPushButton, "exportCSVButton")
         self.count_button = self.window.findChild(QPushButton, "countPushButton")
+        self.count_label = self.window.findChild(QLabel, "countLabel")
         self.light_theme_action = self.window.findChild(QAction, "actionLight")
         self.dark_theme_action = self.window.findChild(QAction, "actionDark")
 

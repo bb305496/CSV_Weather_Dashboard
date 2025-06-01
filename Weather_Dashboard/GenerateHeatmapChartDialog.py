@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QDialog, QPushButton, QLineEdit
+from PySide6.QtWidgets import QDialog, QPushButton, QLineEdit, QComboBox
 from PySide6.QtUiTools import QUiLoader
 import pandas as pd
 
@@ -8,11 +8,21 @@ class HeatmapChartDialog(QDialog):
         self.loader = QUiLoader()
         self.dlg = self.loader.load("../Qt_Designer/heatmapchartdialog.ui")
         self.dlg.setWindowTitle("Chart generator")
+        self.color_palette = ["rocket", "mako", "flare", "crest", "magma", "plasma", "inferno", "viridis", "cubehelix", "coolwarm", "Blues", "Reds", "Greens", "hot", "cool",
+                              "spring", "summer", "autumn", "winter", "Spectral"]
 
         self.init_ui()
+        self.add_colors_to_combo_box()
         self.bind_methods()
 
-    def get_title(self) ->str:
+    def add_colors_to_combo_box(self):
+        for color in self.color_palette:
+            self.color_combo_box.addItem(color)
+
+    def get_color(self) -> str:
+        return self.color_combo_box.currentText()
+
+    def get_title(self) -> str:
         return self.title_line_edit.text()
 
     def get_xaxis_name(self) -> str:
@@ -31,6 +41,7 @@ class HeatmapChartDialog(QDialog):
         self.xaxis_line_edit.setPlaceholderText("Leave empty to skip X-axis label")
         self.yaxis_line_edit = self.dlg.findChild(QLineEdit, "yAxislineEdit")
         self.yaxis_line_edit.setPlaceholderText("Leave empty to skip Y-axis label")
+        self.color_combo_box = self.dlg.findChild(QComboBox, "colorComboBox")
 
     # Binding methods to UI widgets
     def bind_methods(self):
