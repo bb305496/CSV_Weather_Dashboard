@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../Icons/line-chart.png</normaloff>../Icons/line-chart.png</iconset>
+    <normaloff>../Icons/line_axis_100dp_5985E1_FILL0_wght400_GRAD0_opsz48.png</normaloff>../Icons/line_axis_100dp_5985E1_FILL0_wght400_GRAD0_opsz48.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">/*Copyright (c) DevSec Studio. All rights reserved.

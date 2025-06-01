@@ -1,11 +1,11 @@
 import pandas as pd
 from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog, QComboBox, QCheckBox, QLabel, QDialog, QLineEdit, QMessageBox, QDoubleSpinBox
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtGui import QDoubleValidator
 from PySide6.QtCore import QTimer
 from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
 from GenerateScatterChartDialog import ScatterCharDialog
+from GenerateHeatmapChartDialog import HeatmapChartDialog
 from EmptyDatadrameDialog import EmptyDataFrameDialog
 from WarningDialog import WarningDialog
 import matplotlib.pyplot as plt
@@ -27,7 +27,7 @@ class MainWindow:
         self.columns = None
         self.show_pressed = False
         self.filter_pressed = False
-        self.available_charts = ["Plot chart", "Scatter chart"]
+        self.available_charts = ["Plot chart", "Scatter chart", "Heatmap"]
 
         self.init_ui()
         self.bind_methods()
@@ -184,6 +184,9 @@ class MainWindow:
                 self.show_scatter_chart_dialog(self.df)
             elif self.filter_pressed:
                 self.show_scatter_chart_dialog(self.filtered_df)
+        elif self.combo_box2.currentText() == self.available_charts[2]:
+            if self.show_pressed:
+                self.show_heatmap_chart_dialog()
         else:
             #TODO more charts
             # Pie Plot
@@ -191,8 +194,16 @@ class MainWindow:
             # Bar Graph
             # Histogram
             # Box Plot
-            # Heatmap
             print("Wrong Combobox")
+
+    def show_heatmap_chart_dialog(self):
+        dialog = HeatmapChartDialog()
+        result = dialog.show_dialog()
+
+        if result == QDialog.Accepted:
+            print("Accept")
+        elif result == QDialog.Rejected:
+            print("Cancel")
 
     def show_scatter_chart_dialog(self, df: pd.DataFrame):
         dialog = ScatterCharDialog(df.columns)

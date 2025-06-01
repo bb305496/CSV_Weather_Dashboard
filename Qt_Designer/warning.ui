@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../Icons/warning_y.png</normaloff>../Icons/warning_y.png</iconset>
+    <normaloff>../Icons/warning_100dp_FFFF55_FILL0_wght400_GRAD0_opsz48.png</normaloff>../Icons/warning_100dp_FFFF55_FILL0_wght400_GRAD0_opsz48.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">/*Copyright (c) DevSec Studio. All rights reserved.
@@ -1066,7 +1066,7 @@ QProgressBar::chunk
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>../Icons/warning_y.png</pixmap>
+    <pixmap>../Icons/warning_100dp_FFFF55_FILL0_wght400_GRAD0_opsz48.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

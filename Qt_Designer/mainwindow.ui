@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../Icons/monitoring_100dp_5985E1_FILL0_wght400_GRAD0_opsz48.png</normaloff>../Icons/monitoring_100dp_5985E1_FILL0_wght400_GRAD0_opsz48.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">/*Copyright (c) DevSec Studio. All rights reserved.
 
