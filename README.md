@@ -70,8 +70,14 @@ The application offers three types of charts:
    - Different color palettes
    - Annotations with correlation values
 
+4. **Area Line Chart**
+   - Single and multi-line area plots
+   - Configurable X and Y axes
+   - Optional legend and grid
+   - Custom axis labels and titles
+
 ### 🎨 Customization
-- **Interface Themes** - Light and dark themes
+- **Interface Themes** - Light, dark and more themes
 - **Responsive Interface** - Automatic element adjustment
 - **Error Highlighting** - Visual indication of invalid operations
 
@@ -93,6 +99,7 @@ CSV_Weather_Dashboard/
 │   ├── WeatherDashboard.py          # Main application file
 │   ├── TableModel.py                # Data model for table
 │   ├── GenerateHeatmapChartDialog.py # Heatmap dialog
+│   ├── GenerateAreaPlotChartDialog.py # Area plot dialog
 │   ├── GeneratePlotChartDialog.py   # Line chart dialog
 │   ├── GenerateScatterChartDialog.py # Scatter chart dialog
 │   ├── EmptyDatadrameDialog.py      # Empty data warning dialog
@@ -102,11 +109,15 @@ CSV_Weather_Dashboard/
 │   ├── emptydataframe.ui            # Empty data dialog UI
 │   ├── heatmapchartdialog.ui        # Heatmap dialog UI
 │   ├── plotchartdialog.ui           # Plot chart dialog UI
+│   ├── areaplotchartdialog.ui       # Area plot chart dialog UI
 │   ├── scatterchartdialog.ui        # Scatter chart dialog UI
 │   └── warning.ui                   # Warning dialog UI
 ├── Stylesheet/
 │   ├── Combinear.qss                # Dark theme
 │   ├── Combinear.png                # Dark theme assets
+│   ├── Darkeum.qss                  # Blue-Dark theme
+│   ├── Wstartpage.qss               # Purple theme
+│   ├── Irrorater.qss                # Green-Blue theme
 │   ├── Integrid.qss                 # Light theme
 │   └── Integrid.png                 # Light theme assets
 ├── Data/
@@ -196,7 +207,6 @@ This project leverages the following technologies and libraries:
 
 ## 🔧 Future Enhancements
 - Pie Charts
-- Area Plots
 - Bar Graphs
 - Histograms
 - Box Plots
