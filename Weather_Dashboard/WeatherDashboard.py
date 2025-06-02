@@ -3,10 +3,13 @@ from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QTimer, QFile
 from PySide6.QtGui import QAction
+from sympy.abc import alpha
+
 from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
 from GenerateScatterChartDialog import ScatterCharDialog
 from GenerateHeatmapChartDialog import HeatmapChartDialog
+from GenerateAreaPlotChartDialog import AreaPlotChartDialog
 from EmptyDatadrameDialog import EmptyDataFrameDialog
 from WarningDialog import WarningDialog
 import matplotlib.pyplot as plt
@@ -29,7 +32,7 @@ class MainWindow:
         self.columns = None
         self.show_pressed = False
         self.filter_pressed = False
-        self.available_charts = ["Plot chart", "Scatter chart", "Heatmap"]
+        self.available_charts = ["Plot chart", "Scatter chart", "Heatmap", "Area plot chart"]
         file = QFile("../Stylesheet/Combinear.qss")
         file.open(QFile.OpenModeFlag.ReadOnly)
         convert = file.readAll().toStdString()
@@ -44,6 +47,9 @@ class MainWindow:
         # Binding methods to buttons
         if self.load_csv_button:
             self.load_csv_button.clicked.connect(self.load_data)
+
+        if self.open_file_action:
+            self.open_file_action.triggered.connect(self.load_data)
 
         if self.filter_button:
             self.filter_button.clicked.connect(self.show_single_column)
@@ -79,23 +85,23 @@ class MainWindow:
         if self.export_tocsv_button:
             self.export_tocsv_button.clicked.connect(self.save_data)
 
+        if self.save_file_action:
+            self.save_file_action.triggered.connect(self.save_data)
+
         if self.dark_theme_action:
             self.dark_theme_action.triggered.connect(self.set_dark_theme)
 
         if self.light_theme_action:
             self.light_theme_action.triggered.connect(self.set_light_theme)
 
-    def set_dark_theme(self):
-        file = QFile("../Stylesheet/Combinear.qss")
-        file.open(QFile.OpenModeFlag.ReadOnly)
-        convert = file.readAll().toStdString()
-        self.app.setStyleSheet(convert)
+        if self.blue_dark_theme_action:
+            self.blue_dark_theme_action.triggered.connect(self.set_blue_dark_theme)
 
-    def set_light_theme(self):
-        file = QFile("../Stylesheet/Integrid.qss")
-        file.open(QFile.OpenModeFlag.ReadOnly)
-        convert = file.readAll().toStdString()
-        self.app.setStyleSheet(convert)
+        if self.green_blue_theme_action:
+            self.green_blue_theme_action.triggered.connect(self.set_green_blue_theme)
+
+        if self.purple_theme_action:
+            self.purple_theme_action.triggered.connect(self.set_purple_theme)
 
     def count_columns(self):
         if self.df.empty:
@@ -210,17 +216,24 @@ class MainWindow:
                 self.show_scatter_chart_dialog(self.filtered_df)
         elif self.combo_box2.currentText() == self.available_charts[2]:
             if self.show_pressed:
-                self.show_heatmap_chart_dialog()
+                self.show_heatmap_chart_dialog(self.df)
+            elif self.filter_pressed:
+                self.show_heatmap_chart_dialog(self.filtered_df)
+        elif self.combo_box2.currentText() == self.available_charts[3]:
+            if self.show_pressed:
+                self.show_area_plot_chart_dialog(self.df)
+            elif self.filter_pressed:
+                self.show_area_plot_chart_dialog(self.filtered_df)
+
         else:
             #TODO more charts
             # Pie Plot
-            # Area Plot
             # Bar Graph
             # Histogram
             # Box Plot
             print("Wrong Combobox")
 
-    def show_heatmap_chart_dialog(self):
+    def show_heatmap_chart_dialog(self, df: pd.DataFrame):
         dialog = HeatmapChartDialog()
         result = dialog.show_dialog()
 
@@ -231,7 +244,7 @@ class MainWindow:
             y_axis_name = dialog.get_yaxis_name()
             color = dialog.get_color()
 
-            sns.heatmap(self.df.corr(numeric_only=True), annot=True, linewidths=.5, cmap=color)
+            sns.heatmap(df.corr(numeric_only=True), annot=True, linewidths=.5, cmap=color)
             if title:
                 plt.title(title)
             if x_axis_name:
@@ -309,6 +322,48 @@ class MainWindow:
                 plt.legend(loc="lower left")
             if dialog.is_grid_selected():
                 plt.grid()
+            plt.tight_layout()
+            plt.show()
+
+        elif result == QDialog.Rejected:
+            print("Cancel")
+
+    def show_area_plot_chart_dialog(self, df: pd.DataFrame):
+        dialog = AreaPlotChartDialog(df.columns)
+        result = dialog.show_dialog()
+
+        if result == QDialog.Accepted:
+            print("Accept")
+            x_axis = dialog.actual_combobox_x_item()
+            y_axis = dialog.actual_combobox_y_item()
+            x2_axis = dialog.actual_combobox_x2_item()
+            y2_axis = dialog.actual_combobox_y2_item()
+            x_axis_name = dialog.get_xaxis_name()
+            y_axis_name = dialog.get_yaxis_name()
+            title = dialog.get_title()
+
+            plt.fill_between(df[x_axis], df[y_axis], alpha=0.5)
+            plt.plot(df[x_axis], df[y_axis], alpha=0.8, label=y_axis_name if y_axis_name else y_axis)
+            if x2_axis != "None" and y2_axis != "None":
+                plt.fill_between(df[x2_axis], df[y2_axis], alpha=0.5)
+                plt.plot(df[x2_axis], df[y2_axis], alpha=0.8, label=y2_axis)
+            elif x2_axis != "None":
+                plt.fill_between(df[x2_axis], df[y_axis], alpha=0.5)
+                plt.plot(df[x2_axis], df[y_axis], alpha=0.8, label=x2_axis)
+            elif y2_axis != "None":
+                plt.fill_between(df[x_axis], df[y2_axis], alpha=0.5)
+                plt.plot(df[x_axis], df[y2_axis], alpha=0.8, label=y2_axis)
+            if x_axis_name:
+                plt.xlabel(x_axis_name)
+            if y_axis_name:
+                plt.ylabel(y_axis_name)
+            if title:
+                plt.title(title)
+            if dialog.is_legend_selected():
+                plt.legend(loc="lower left")
+            if dialog.is_grid_selected():
+                plt.grid()
+
             plt.tight_layout()
             plt.show()
 
@@ -408,18 +463,38 @@ class MainWindow:
                     self.label_3.setText(f"Min value: \n{df_mean.to_string()}")
 
     def save_data(self):
-        if not self.filtered_df.empty:
-            file_patch = QFileDialog.getSaveFileName(None, "Save CSV file", "", "Data Files (*.csv)")
-            print(file_patch)
+        if self.show_pressed:
+            if not self.df.empty:
+                file_patch = QFileDialog.getSaveFileName(None, "Save CSV file", "", "Data Files (*.csv)")
 
-            if file_patch:
-                try:
-                    self.filtered_df.to_csv(file_patch[0], index=False, sep=";")
-                except:
-                    print("Saving data ERROR")
+                if file_patch:
+                    try:
+                        ctext = self.check_text()
+                        if ctext == "All":
+                            self.df.to_csv(file_patch[0], index=False, sep=";")
+                        else:
+                            data_to_save = self.df[ctext]
+                            data_to_save.to_csv(file_patch[0], index=False, sep=";")
+                    except:
+                        print("Saving data ERROR")
+            else:
+                self.show_warning_no_csv_dialogue()
+                print("No df")
+        elif self.filter_pressed:
+            if not self.filtered_df.empty:
+                file_patch = QFileDialog.getSaveFileName(None, "Save CSV file", "", "Data Files (*.csv)")
+                print(file_patch)
+
+                if file_patch:
+                    try:
+                        self.filtered_df.to_csv(file_patch[0], index=False, sep=";")
+                    except:
+                        print("Saving data ERROR")
+            else:
+                self.show_warning_dialog("No Filtered Data")
+                print("No filtered_df")
         else:
-            self.show_warning_dialog("No Filtered Data")
-            print("No df")
+            self.show_warning_no_csv_dialogue()
 
     # Convert "," to "."
     def convert_commas_to_dots(self, df: pd.DataFrame):
@@ -538,6 +613,41 @@ class MainWindow:
         self.count_label = self.window.findChild(QLabel, "countLabel")
         self.light_theme_action = self.window.findChild(QAction, "actionLight")
         self.dark_theme_action = self.window.findChild(QAction, "actionDark")
+        self.blue_dark_theme_action = self.window.findChild(QAction, "actionBlue_Dark")
+        self.green_blue_theme_action = self.window.findChild(QAction, "actionGreen_Blue")
+        self.purple_theme_action = self.window.findChild(QAction, "actionPurple")
+        self.save_file_action = self.window.findChild(QAction, "actionSave")
+        self.open_file_action = self.window.findChild(QAction, "actionOpen")
+
+    def set_dark_theme(self):
+        file = QFile("../Stylesheet/Combinear.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_light_theme(self):
+        file = QFile("../Stylesheet/Integrid.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_blue_dark_theme(self):
+        file = QFile("../Stylesheet/Darkeum.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_green_blue_theme(self):
+        file = QFile("../Stylesheet/Irrorater.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_purple_theme(self):
+        file = QFile("../Stylesheet/Wstartpage.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
 
     # Showing data on tabel
     def display_data(self, df):
