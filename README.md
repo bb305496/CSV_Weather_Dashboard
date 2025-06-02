@@ -236,5 +236,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 **Author:**  bb305496  
 **Contact:**  barb305496@gmail.com  
-**Version:** 1.0.0
+**Version:** 1.1.0
 
