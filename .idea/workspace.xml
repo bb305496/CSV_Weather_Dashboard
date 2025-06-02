@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d489afc-102e-4fbc-9183-288d06bb94db" name="Changes" comment="Dynamic data filtering by column">
+      <change afterPath="$PROJECT_DIR$/Qt_Designer/areaplotchartdialog.ui" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Weather_Dashboard/GenerateAreaPlotChartDialog.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Qt_Designer/emptydataframe.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt_Designer/emptydataframe.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Qt_Designer/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt_Designer/mainwindow.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Weather_Dashboard/WeatherDashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/Weather_Dashboard/WeatherDashboard.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

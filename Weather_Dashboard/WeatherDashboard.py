@@ -3,10 +3,13 @@ from PySide6.QtWidgets import QApplication, QTableView, QPushButton, QFileDialog
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QTimer, QFile
 from PySide6.QtGui import QAction
+from sympy.abc import alpha
+
 from TableModel import TableModel
 from GeneratePlotChartDialog import PlotChartDialog
 from GenerateScatterChartDialog import ScatterCharDialog
 from GenerateHeatmapChartDialog import HeatmapChartDialog
+from GenerateAreaPlotChartDialog import AreaPlotChartDialog
 from EmptyDatadrameDialog import EmptyDataFrameDialog
 from WarningDialog import WarningDialog
 import matplotlib.pyplot as plt
@@ -29,7 +32,7 @@ class MainWindow:
         self.columns = None
         self.show_pressed = False
         self.filter_pressed = False
-        self.available_charts = ["Plot chart", "Scatter chart", "Heatmap"]
+        self.available_charts = ["Plot chart", "Scatter chart", "Heatmap", "Area plot chart"]
         file = QFile("../Stylesheet/Combinear.qss")
         file.open(QFile.OpenModeFlag.ReadOnly)
         convert = file.readAll().toStdString()
@@ -213,17 +216,24 @@ class MainWindow:
                 self.show_scatter_chart_dialog(self.filtered_df)
         elif self.combo_box2.currentText() == self.available_charts[2]:
             if self.show_pressed:
-                self.show_heatmap_chart_dialog()
+                self.show_heatmap_chart_dialog(self.df)
+            elif self.filter_pressed:
+                self.show_heatmap_chart_dialog(self.filtered_df)
+        elif self.combo_box2.currentText() == self.available_charts[3]:
+            if self.show_pressed:
+                self.show_area_plot_chart_dialog(self.df)
+            elif self.filter_pressed:
+                self.show_area_plot_chart_dialog(self.filtered_df)
+
         else:
             #TODO more charts
             # Pie Plot
-            # Area Plot
             # Bar Graph
             # Histogram
             # Box Plot
             print("Wrong Combobox")
 
-    def show_heatmap_chart_dialog(self):
+    def show_heatmap_chart_dialog(self, df: pd.DataFrame):
         dialog = HeatmapChartDialog()
         result = dialog.show_dialog()
 
@@ -234,7 +244,7 @@ class MainWindow:
             y_axis_name = dialog.get_yaxis_name()
             color = dialog.get_color()
 
-            sns.heatmap(self.df.corr(numeric_only=True), annot=True, linewidths=.5, cmap=color)
+            sns.heatmap(df.corr(numeric_only=True), annot=True, linewidths=.5, cmap=color)
             if title:
                 plt.title(title)
             if x_axis_name:
@@ -312,6 +322,48 @@ class MainWindow:
                 plt.legend(loc="lower left")
             if dialog.is_grid_selected():
                 plt.grid()
+            plt.tight_layout()
+            plt.show()
+
+        elif result == QDialog.Rejected:
+            print("Cancel")
+
+    def show_area_plot_chart_dialog(self, df: pd.DataFrame):
+        dialog = AreaPlotChartDialog(df.columns)
+        result = dialog.show_dialog()
+
+        if result == QDialog.Accepted:
+            print("Accept")
+            x_axis = dialog.actual_combobox_x_item()
+            y_axis = dialog.actual_combobox_y_item()
+            x2_axis = dialog.actual_combobox_x2_item()
+            y2_axis = dialog.actual_combobox_y2_item()
+            x_axis_name = dialog.get_xaxis_name()
+            y_axis_name = dialog.get_yaxis_name()
+            title = dialog.get_title()
+
+            plt.fill_between(df[x_axis], df[y_axis], alpha=0.5)
+            plt.plot(df[x_axis], df[y_axis], alpha=0.8, label=y_axis_name if y_axis_name else y_axis)
+            if x2_axis != "None" and y2_axis != "None":
+                plt.fill_between(df[x2_axis], df[y2_axis], alpha=0.5)
+                plt.plot(df[x2_axis], df[y2_axis], alpha=0.8, label=y2_axis)
+            elif x2_axis != "None":
+                plt.fill_between(df[x2_axis], df[y_axis], alpha=0.5)
+                plt.plot(df[x2_axis], df[y_axis], alpha=0.8, label=x2_axis)
+            elif y2_axis != "None":
+                plt.fill_between(df[x_axis], df[y2_axis], alpha=0.5)
+                plt.plot(df[x_axis], df[y2_axis], alpha=0.8, label=y2_axis)
+            if x_axis_name:
+                plt.xlabel(x_axis_name)
+            if y_axis_name:
+                plt.ylabel(y_axis_name)
+            if title:
+                plt.title(title)
+            if dialog.is_legend_selected():
+                plt.legend(loc="lower left")
+            if dialog.is_grid_selected():
+                plt.grid()
+
             plt.tight_layout()
             plt.show()
 
