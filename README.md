@@ -218,6 +218,13 @@ I welcome:
 
 ## 📦 Changelog
 
+### [1.1.0] – 02.06.2025
+- Add Blue-Dark, Green-Blue and Purple themes
+- Add open and save data options to menu bar
+- Improve file saving function
+- Add generating heatmap with filtered data
+- Add area plot chart
+
 ### [1.0.0] – 01.06.2025
 - Initial release
 
