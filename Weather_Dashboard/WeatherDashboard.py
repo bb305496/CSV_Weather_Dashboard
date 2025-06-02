@@ -45,6 +45,9 @@ class MainWindow:
         if self.load_csv_button:
             self.load_csv_button.clicked.connect(self.load_data)
 
+        if self.open_file_action:
+            self.open_file_action.triggered.connect(self.load_data)
+
         if self.filter_button:
             self.filter_button.clicked.connect(self.show_single_column)
 
@@ -79,23 +82,23 @@ class MainWindow:
         if self.export_tocsv_button:
             self.export_tocsv_button.clicked.connect(self.save_data)
 
+        if self.save_file_action:
+            self.save_file_action.triggered.connect(self.save_data)
+
         if self.dark_theme_action:
             self.dark_theme_action.triggered.connect(self.set_dark_theme)
 
         if self.light_theme_action:
             self.light_theme_action.triggered.connect(self.set_light_theme)
 
-    def set_dark_theme(self):
-        file = QFile("../Stylesheet/Combinear.qss")
-        file.open(QFile.OpenModeFlag.ReadOnly)
-        convert = file.readAll().toStdString()
-        self.app.setStyleSheet(convert)
+        if self.blue_dark_theme_action:
+            self.blue_dark_theme_action.triggered.connect(self.set_blue_dark_theme)
 
-    def set_light_theme(self):
-        file = QFile("../Stylesheet/Integrid.qss")
-        file.open(QFile.OpenModeFlag.ReadOnly)
-        convert = file.readAll().toStdString()
-        self.app.setStyleSheet(convert)
+        if self.green_blue_theme_action:
+            self.green_blue_theme_action.triggered.connect(self.set_green_blue_theme)
+
+        if self.purple_theme_action:
+            self.purple_theme_action.triggered.connect(self.set_purple_theme)
 
     def count_columns(self):
         if self.df.empty:
@@ -408,18 +411,38 @@ class MainWindow:
                     self.label_3.setText(f"Min value: \n{df_mean.to_string()}")
 
     def save_data(self):
-        if not self.filtered_df.empty:
-            file_patch = QFileDialog.getSaveFileName(None, "Save CSV file", "", "Data Files (*.csv)")
-            print(file_patch)
+        if self.show_pressed:
+            if not self.df.empty:
+                file_patch = QFileDialog.getSaveFileName(None, "Save CSV file", "", "Data Files (*.csv)")
 
-            if file_patch:
-                try:
-                    self.filtered_df.to_csv(file_patch[0], index=False, sep=";")
-                except:
-                    print("Saving data ERROR")
+                if file_patch:
+                    try:
+                        ctext = self.check_text()
+                        if ctext == "All":
+                            self.df.to_csv(file_patch[0], index=False, sep=";")
+                        else:
+                            data_to_save = self.df[ctext]
+                            data_to_save.to_csv(file_patch[0], index=False, sep=";")
+                    except:
+                        print("Saving data ERROR")
+            else:
+                self.show_warning_no_csv_dialogue()
+                print("No df")
+        elif self.filter_pressed:
+            if not self.filtered_df.empty:
+                file_patch = QFileDialog.getSaveFileName(None, "Save CSV file", "", "Data Files (*.csv)")
+                print(file_patch)
+
+                if file_patch:
+                    try:
+                        self.filtered_df.to_csv(file_patch[0], index=False, sep=";")
+                    except:
+                        print("Saving data ERROR")
+            else:
+                self.show_warning_dialog("No Filtered Data")
+                print("No filtered_df")
         else:
-            self.show_warning_dialog("No Filtered Data")
-            print("No df")
+            self.show_warning_no_csv_dialogue()
 
     # Convert "," to "."
     def convert_commas_to_dots(self, df: pd.DataFrame):
@@ -538,6 +561,41 @@ class MainWindow:
         self.count_label = self.window.findChild(QLabel, "countLabel")
         self.light_theme_action = self.window.findChild(QAction, "actionLight")
         self.dark_theme_action = self.window.findChild(QAction, "actionDark")
+        self.blue_dark_theme_action = self.window.findChild(QAction, "actionBlue_Dark")
+        self.green_blue_theme_action = self.window.findChild(QAction, "actionGreen_Blue")
+        self.purple_theme_action = self.window.findChild(QAction, "actionPurple")
+        self.save_file_action = self.window.findChild(QAction, "actionSave")
+        self.open_file_action = self.window.findChild(QAction, "actionOpen")
+
+    def set_dark_theme(self):
+        file = QFile("../Stylesheet/Combinear.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_light_theme(self):
+        file = QFile("../Stylesheet/Integrid.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_blue_dark_theme(self):
+        file = QFile("../Stylesheet/Darkeum.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_green_blue_theme(self):
+        file = QFile("../Stylesheet/Irrorater.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
+
+    def set_purple_theme(self):
+        file = QFile("../Stylesheet/Wstartpage.qss")
+        file.open(QFile.OpenModeFlag.ReadOnly)
+        convert = file.readAll().toStdString()
+        self.app.setStyleSheet(convert)
 
     # Showing data on tabel
     def display_data(self, df):
